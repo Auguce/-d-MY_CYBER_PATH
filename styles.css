@@ -1,4 +1,4 @@
-/* ========== 基础重置 ========== */
+/* ================== 全局重置 ================== */
 * {
     margin: 0;
     padding: 0;
@@ -7,20 +7,67 @@
   html, body {
     width: 100%;
     height: 100%;
-    overflow: hidden; /* 禁用浏览器默认滚动，只用JS控制上下翻页 */
+    overflow: hidden; /* 禁用默认滚动 */
     font-family: Arial, sans-serif;
     background: #f4f4f4;
     line-height: 1.6;
   }
   
-  /* ========== #app 主容器 ========== */
   #app {
     width: 100%;
     height: 100%;
     position: relative;
   }
   
-  /* ========== 通用 .page 样式 ========== */
+  /* ================== 主标题 ==================
+     需求: 
+     - 字体渐变灰色、加粗、半透明
+     - 如果窗口足够宽(大屏), 竖排在左侧;
+     - 否则, 横排在 about-container 的上方
+  */
+  #main-title {
+    position: absolute;
+    top: 20px;
+    left: 20px; /* 初始位置（在足够大屏幕下竖排） */
+    font-weight: bold;
+    font-size: 2rem;
+    color: rgba(60,60,60,0.6); /* 半透明灰 */
+    z-index: 10; /* 盖在最上层 */
+    writing-mode: vertical-rl; /* 竖排文字(从上往下) */
+    text-orientation: mixed;
+    background: linear-gradient(90deg, #999 0%, #666 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* 让文字背景渐变; 需要clip text + fill transparent */
+    transition: all 0.5s ease;
+  }
+  
+  /* ============== 媒体查询: 大屏 -> 竖排; 中小屏 -> 横排 ============== */
+  /* 当屏幕足够宽(>= 1400px 仅供参考), 并且能容纳竖排标题 + 左右排布不遮挡 */
+  @media (min-width: 1400px) {
+    #main-title {
+      /* 竖排, 左侧 */
+      top: 20px;
+      left: 20px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 2.2rem;
+    }
+  }
+  
+  /* 当小于1400px时, 标题改为横排 */
+  @media (max-width: 1399px) {
+    #main-title {
+      writing-mode: horizontal-tb;
+      text-orientation: upright;
+      font-size: 2rem;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* ================== .page 通用样式 ================== */
   .page {
     position: absolute;
     top: 0; left: 0;
@@ -29,15 +76,13 @@
     overflow: hidden;
     transition: opacity 0.8s ease, transform 0.8s ease;
     z-index: 1;
-    opacity: 0; /* 默认不可见 */
+    opacity: 0;
   }
   .visible-page {
     z-index: 2;
     opacity: 1;
     transform: translateY(0);
   }
-  
-  /* 当页面隐藏时，可稍微上/下移动 + 半透明，彼此透视 */
   #page-about.not-visible {
     transform: translateY(-10%);
     opacity: 0.5;
@@ -47,7 +92,7 @@
     opacity: 0.5;
   }
   
-  /* ========== About Me 页面 ========== */
+  /* ================== About Me 区域 ================== */
   #page-about {
     background: linear-gradient(
       to bottom,
@@ -56,6 +101,7 @@
       rgba(255,255,255,0) 100%
     );
   }
+  /* 容器可滚动, max-height 限制, 使小屏能滚动查看 */
   .about-container {
     width: 80%;
     max-width: 1000px;
@@ -63,23 +109,39 @@
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    overflow-y: auto; /* 关键: 可滚动 */
+    max-height: calc(100% - 120px); 
+    /* 留120px给按钮,标题等; 视需要可再调大 */
   }
-  .about-container .profile-pic {
+  
+  .profile-pic {
     width: 200px;
     height: auto;
     border-radius: 10px;
+    flex-shrink: 0;
   }
-  .about-container .summary {
+  
+  .summary {
     flex: 1;
     text-align: justify;
     font-size: 1rem;
+    margin-right: 10px;
   }
-  .about-container .summary p {
+  .summary p {
     margin-bottom: 1em;
   }
-  .about-container .summary h2 {
+  .summary h2 {
     font-size: 1.6rem;
     margin-bottom: 0.8em;
+  }
+  
+  /* 当空间不够时, 照片和文字上下排布 */
+  @media (max-width: 900px) {
+    .about-container {
+      flex-direction: column;
+      align-items: center;
+      max-height: calc(100% - 120px);
+    }
   }
   
   /* ========== 向下箭头按钮 ========== */
@@ -88,24 +150,24 @@
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;    /* 又宽又矮 */
+    width: 120px;
     height: 50px;
-    background: rgba(0,0,0,0.3); /* 半透明背景 */
+    background: rgba(0,0,0,0.3);
     border-radius: 10px;
     text-align: center;
-    line-height: 50px; /* 让符号上下居中 */
+    line-height: 50px;
     font-size: 2rem; 
     color: #fff;
     cursor: pointer;
     opacity: 0.8;
     transition: opacity 0.3s;
-    z-index: 3; /* 确保按钮不被卡片盖住 */
+    z-index: 3;
   }
   .arrow-down:hover {
     opacity: 1;
   }
   
-  /* ========== 经历页面 ========== */
+  /* ================== 经历卡片页面 ================== */
   #page-experience {
     background: linear-gradient(
       to top,
@@ -113,9 +175,12 @@
       rgba(233,239,245,0.6) 85%,
       rgba(233,239,245,0) 100%
     );
+    /* 让卡片区域稍微往下移,给上面的 about me 留空间 */
+    padding-top: 60px; 
+    box-sizing: border-box;
   }
   
-  /* Swiper 容器尽量占满剩余空间 */
+  /* Swiper */
   .swiper-container {
     width: 100%;
     height: calc(100% - 100px); 
@@ -123,12 +188,12 @@
     box-sizing: border-box;
   }
   
-  /* 修正 Swiper Slide 默认的排版混乱 - 让文字正常换行 */
+  /* 让文字正常换行 */
   .swiper-slide {
     display: block;
   }
   
-  /* 单个卡片（Slide）的样式 */
+  /* 卡片样式 */
   .dark-section {
     background: #fff;
     border-left: 5px solid #2a5d84;
@@ -137,12 +202,8 @@
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   
-    /* 卡片宽度加大50%：原900 -> 1350 */
-    max-width: 1350px;
-  
-    /* 加上自适应保障在手机端不太溢出 */
+    max-width: 900px; 
     width: 90%;
-    /* 内容较多时可垂直滚动 */
     height: auto; 
     overflow-y: auto;
   }
@@ -165,10 +226,10 @@
     text-align: justify;
   }
   
-  /* ========== 向上箭头按钮 - 顶部居中 ========== */
+  /* 向上箭头按钮 */
   .arrow-up {
     position: absolute;
-    top: 40px;
+    top: 20px; 
     left: 50%;
     transform: translateX(-50%);
     width: 120px;
@@ -188,7 +249,7 @@
     opacity: 1;
   }
   
-  /* ========== Swiper Coverflow 效果 ========== */
+  /* Swiper coverflow 效果 */
   .swiper-slide-active {
     opacity: 1;
   }
@@ -198,7 +259,7 @@
     transform: scale(0.9);
   }
   
-  /* ========== Swiper 默认控件样式 ========== */
+  /* Swiper 默认控件样式 */
   .swiper-button-prev, .swiper-button-next {
     color: #333;
   }
@@ -267,24 +328,14 @@
     font-size: 18px;
   }
   
-  /* ========== 媒体查询：在小屏幕下保持合理宽度 ========== */
-  @media (max-width: 768px) {
-    .dark-section {
-      max-width: 95%;
-      width: 95%;
-    }
-    .arrow-down, .arrow-up {
-      width: 100px;
-      height: 45px;
-      font-size: 1.5rem;
-      line-height: 45px;
-    }
-    .about-container {
-      flex-direction: column;
-      align-items: center;
-    }
-    .about-container .profile-pic {
-      margin-bottom: 20px;
+  /* 
+    小屏幕适配:
+    - 标题太长时, 缩小字号
+    - about me 上下排布
+  */
+  @media (max-width: 900px) {
+    #main-title {
+      font-size: 1.8rem;
     }
   }
   
