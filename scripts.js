@@ -2,22 +2,27 @@
  * 0) DOM 就绪后的一些初始设置
  *******************************************************/
 document.addEventListener("DOMContentLoaded", () => {
-    // 初始状态: About 可见, Experience 不可见
+    // 初始状态: About Me 可见, Experience 不可见
     const pageAbout = document.getElementById("page-about");
     const pageExp = document.getElementById("page-experience");
   
-    // 防止HTML里万一没写
+    // 如果没在 HTML 里手动写好类名，就在此强制
     pageAbout.classList.add("visible-page");
     pageExp.classList.add("not-visible");
   
     // 初始化 Swiper（只在 Experience 页面内部）
     const swiper = new Swiper('.swiper-container', {
-      direction: 'horizontal',
+      effect: 'coverflow',          // 关键：coverflow效果
+      coverflowEffect: {
+        rotate: 0,                  // 不进行上下翻转
+        stretch: -100,             // 卡片间距离(负值会让卡片更密集在中央)
+        depth: 200,                // 卡片分层深度
+        modifier: 1,               // 效果增幅
+        slideShadows: false,       // 关闭阴影
+      },
+      centeredSlides: true,         // 当前slide居中
+      slidesPerView: 'auto',        // 根据内容自动计算宽度
       loop: false,
-      // 当前幻灯片居中显示；前后slide半透明
-      centeredSlides: true,
-      slidesPerView: 1, // 可保证只显示1个slide，其他slide部分溢出
-      spaceBetween: 60, 
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
@@ -29,8 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
       keyboard: {
         enabled: true,
       },
-      // 禁止自动高度，以便卡片保持一致高度
-      autoHeight: false, 
     });
   });
   
@@ -108,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   /*******************************************************
-   * 3) 监听滚轮事件(已注释掉) - 如果不需要滚轮翻页，就保留注释
+   * 3) 监听滚轮事件(可选) - 暂时注释掉
    *******************************************************/
   /*
   let scrollTimeout = null;
