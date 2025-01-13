@@ -18,33 +18,33 @@
 
     <!-- 
       [页1] About Me：
-      1) 大屏下，标题竖排在左侧、照片在中间、文本在右侧
-      2) 小屏下，标题与照片、文本依次往上放
-      3) 标题随 about-container 一起滚动，不再固定
+      - 大屏下：标题竖排在左，row-lateral 里照片 + 文本并排在右
+      - 中屏下：标题独占一行，再下一行 row-lateral 并排照片/文本
+      - 小屏下：标题 + row-lateral(照片+文本) 全部上下排布
+      - 标题可随 about-container 滚动
     -->
     <section id="page-about" class="page visible-page">
       <div class="about-container">
-        
-        <!-- 主标题：大屏竖排，小屏横排；Experience 时隐藏（在 scripts.js 中切换类名） -->
+        <!-- 主标题 -->
         <div id="main-title">My Cybersecurity Journey</div>
-        
-        <!-- 照片 -->
-        <img src="profile.jpg" alt="My Profile Picture" class="profile-pic" />
-        
-        <!-- About Me 文本 -->
-        <div class="summary">
-          <h2>Binyu Wang</h2>
-          <p>
-            <strong>About Me</strong><br>
-            As a dedicated Master's student in Computer Science with a specialization in Cybersecurity at Boston University, I have charted a unique path in my academic and career journey. Initially targeting a career in business, my undergraduate studies spanned a diverse range of subjects from accounting and financial fundamentals to artificial intelligence and database management. However, during my second year and subsequent exchange in the UK, I pivoted towards computer science, embracing the challenges and rigors this field demanded.
-          </p>
-          <p>
-            This transition was fueled by my fascination with cybersecurity, particularly sparked by my exposure to key exchange protocols. This interest led to my undergraduate project on "Key Exchange using Neural Networks," reflecting my belief in the paramount importance of cybersecurity in our AI-driven era. Despite the steep learning curve, the sense of achievement from mastering new skills in computer science as an "outsider" has been immensely rewarding.
-          </p>
-          <p>
-            Long-term, I aspire to be a proficient penetration tester, staying ahead of evolving cyber threats and contributing to the development of secure digital environments. Before reaching this milestone, I seek to gain diverse work experience through internships, eager to join a dynamic team where I can both contribute and grow. I firmly believe that experiences in team collaboration will be an invaluable asset in my career journey.
-          </p>
-        </div>
+
+        <!-- row-lateral：照片 + 文本 二者并排或上下排 -->
+        <div class="row-lateral">
+          <img src="profile.jpg" alt="My Profile Picture" class="profile-pic" />
+          <div class="summary">
+            <h2>Binyu Wang</h2>
+            <p>
+              <strong>About Me</strong><br>
+              As a dedicated Master's student in Computer Science with a specialization in Cybersecurity at Boston University, I have charted a unique path in my academic and career journey. Initially targeting a career in business, my undergraduate studies spanned a diverse range of subjects from accounting and financial fundamentals to artificial intelligence and database management. However, during my second year and subsequent exchange in the UK, I pivoted towards computer science, embracing the challenges and rigors this field demanded.
+            </p>
+            <p>
+              This transition was fueled by my fascination with cybersecurity, particularly sparked by my exposure to key exchange protocols. This interest led to my undergraduate project on "Key Exchange using Neural Networks," reflecting my belief in the paramount importance of cybersecurity in our AI-driven era. Despite the steep learning curve, the sense of achievement from mastering new skills in computer science as an "outsider" has been immensely rewarding.
+            </p>
+            <p>
+              Long-term, I aspire to be a proficient penetration tester, staying ahead of evolving cyber threats and contributing to the development of secure digital environments. Before reaching this milestone, I seek to gain diverse work experience through internships, eager to join a dynamic team where I can both contribute and grow. I firmly believe that experiences in team collaboration will be an invaluable asset in my career journey.
+            </p>
+          </div>
+        </div> <!-- /row-lateral -->
       </div>
 
       <!-- 向下箭头按钮，用于翻页到 #page-experience -->
@@ -54,13 +54,12 @@
 
     <!-- 
       [页2] 经历 / 项目 (Swiper Coverflow):
-      1) 主标题在这里隐藏
-      2) 增加 Swiper speed，更慢动画，更平滑帧率
-      3) 小屏下按钮不被遮挡，可点击
+      - 主标题在这里隐藏 (scripts.js中加 hidden-title)
+      - 再度放慢Swiper动画
+      - 小屏下按钮不被遮挡
     -->
     <section id="page-experience" class="page not-visible">
-
-      <!-- Swiper 主容器：左右翻页的核心 -->
+      <!-- Swiper 主容器：左右翻页核心 -->
       <div class="swiper-container">
         <div class="swiper-wrapper">
 
