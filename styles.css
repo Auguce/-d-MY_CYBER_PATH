@@ -75,3 +75,25 @@ footer {
         max-width: 95%;
     }
 }
+
+.scores-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.scores-gallery img {
+    max-width: 300px;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.scores-gallery img:hover {
+    transform: scale(1.05);
+    border-color: #333;
+}
