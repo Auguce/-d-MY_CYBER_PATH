@@ -7,9 +7,10 @@
   html, body {
     width: 100%;
     height: 100%;
-    overflow: hidden; /* 重要：禁用浏览器默认滚动，让我们用JS手动控制 */
+    overflow: hidden; /* 禁用浏览器默认滚动，只用JS控制上下翻页 */
     font-family: Arial, sans-serif;
     background: #f4f4f4;
+    line-height: 1.6; /* 调整行高，提升可读性 */
   }
   
   /* ========== #app 主容器 ========== */
@@ -21,11 +22,11 @@
   
   /* ========== 通用 .page 样式 ========== */
   .page {
-    position: absolute; /* 绝对定位，彼此重叠 */
+    position: absolute; /* 绝对定位，相互叠层 */
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* 内部若需要滚动，可酌情设置 */
+    overflow: hidden; 
     transition: opacity 0.8s ease, transform 0.8s ease;
     z-index: 1; /* 默认在底层 */
     opacity: 0; /* 默认不可见 */
@@ -38,23 +39,35 @@
     transform: translateY(0);
   }
   
-  /* ========== About Me 页面 ========== */
-  #page-about {
-    background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,1) 70%,
-      rgba(255,255,255,0.5) 90%,
-      rgba(255,255,255,0) 100%
-    ); 
-    /* 这条渐变只是示例：顶部完全不透明，越往下越透，看起来能隐约看到后面的内容。 */
-    /* 你可以改成更明显或更微妙的渐变。 */
+  /* 
+   * 当不在可见状态时，让页面上/下稍微移动，以带有渐隐效果 
+   * 这样可以隐约看到另一页面在背后
+   */
+  #page-about.not-visible {
+    transform: translateY(-10%);
+    opacity: 0.5; /* 让 About Me 更透明，可透视到下方经历 */
+  }
+  #page-experience.not-visible {
+    transform: translateY(10%);
+    opacity: 0.5; /* 让经历页更透明，可透视到上方 About Me */
   }
   
-  /* 内容容器，留出一些滚动或内边距 */
+  /* ========== About Me 页面 ========== */
+  #page-about {
+    /* 显示更明显的上不透明、下渐透明，让下层页面若隐若现 */
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.98) 60%,
+      rgba(255,255,255,0.6) 80%,
+      rgba(255,255,255,0.0) 100%
+    ); 
+  }
+  
+  /* 容器 + 布局 */
   .about-container {
     width: 80%;
     max-width: 1000px;
-    margin: 80px auto; /* 距离上方留点空间 */
+    margin: 80px auto; 
     display: flex;
     gap: 20px;
     align-items: flex-start;
@@ -67,10 +80,18 @@
     border-radius: 10px;
   }
   
-  /* 文本区 */
+  /* 文本区：间距和字体修饰 */
   .about-container .summary {
     flex: 1;
     text-align: justify;
+    font-size: 1rem;
+  }
+  .about-container .summary p {
+    margin-bottom: 1em; /* 段落间距 */
+  }
+  .about-container .summary h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.8em;
   }
   
   /* 向下箭头按钮 */
@@ -91,14 +112,13 @@
   
   /* ========== Experience 页面 ========== */
   #page-experience {
+    /* 从下到上渐透明，让后面 About Me 若隐若现 */
     background: linear-gradient(
       to top,
-      rgba(233,239,245,1) 70%,
+      rgba(233,239,245,0.98) 60%,
       rgba(233,239,245,0.6) 85%,
-      rgba(233,239,245,0) 100%
+      rgba(233,239,245,0.0) 100%
     );
-    /* 这里做个自下而上的渐变，留出顶部可以透过来，让人看到 About Me 的影子 */
-    /* 你也可以加上 background-color: #e9eff5; 再做渐变叠加。 */
   }
   
   /* Swiper 容器在经历页中占据可用区域 */
@@ -108,16 +128,39 @@
     margin: 50px auto 0;
   }
   
-  /* Swiper 内部 slide 样式 */
+  /* 单个卡片（Slide）的样式 */
   .dark-section {
-    background: #e9eff5;
+    background: #ffffff;
     border-left: 5px solid #2a5d84;
     padding: 20px;
     border-radius: 10px;
-    margin: 20px;
+    margin: 20px auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    height: auto; /* 根据内容自适应 */
+  
+    /* 限制宽度，使其与 About Me 的宽度相仿 */
+    max-width: 800px;
+  
+    /* 内部若文字过多可滚动 */
+    height: calc(100% - 40px); 
     overflow-y: auto;
+  }
+  
+  /* 调整文字排版，增大标题字号 */
+  .dark-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.6em;
+  }
+  .dark-section h3 {
+    font-size: 1.3rem;
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+    color: #333;
+  }
+  .dark-section p, .dark-section li {
+    font-size: 1rem;
+    margin-bottom: 0.8em;
+    line-height: 1.6;
+    text-align: justify;
   }
   
   /* 向上箭头按钮 */
@@ -144,14 +187,17 @@
     background: #333;
   }
   
-  /* ========== 显示/隐藏时的 transform 效果 ========== */
-  /* 当不在可见状态时，可以让页面稍微上移或下移，带有渐隐效果 */
-  #page-about.not-visible {
-    transform: translateY(-10%);
+  /* 让前后slide半透明：使用 Swiper 内置 prev/next 样式钩子 */
+  .swiper-slide-prev,
+  .swiper-slide-next {
+    opacity: 0.3; /* 非当前Slide变为半透明 */
+    pointer-events: none; /* 禁止对它进行点击等交互 */
   }
-  #page-experience.not-visible {
-    transform: translateY(10%);
-    /* 让它在初始时在“更下面” */
+  
+  /* 分别让当前 Slide 全不透明 */
+  .swiper-slide-active {
+    opacity: 1;
+    pointer-events: auto;
   }
   
   /* ========== 画廊图片/Modal 放大 ========== */
@@ -175,7 +221,7 @@
     border-color: #333;
   }
   
-  /* Modal 样式（保留你的原需求） */
+  /* Modal 样式 */
   .modal {
     display: none;
     position: fixed;
@@ -184,7 +230,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: auto; 
     background-color: rgba(0,0,0,0.8);
   }
   .modal-content {

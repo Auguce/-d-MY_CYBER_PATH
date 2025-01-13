@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pageAbout = document.getElementById("page-about");
     const pageExp = document.getElementById("page-experience");
   
-    // 如果没在 HTML 中手动写好类名，可以在脚本里加
+    // 防止HTML里万一没写
     pageAbout.classList.add("visible-page");
     pageExp.classList.add("not-visible");
   
@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const swiper = new Swiper('.swiper-container', {
       direction: 'horizontal',
       loop: false,
+      // 当前幻灯片居中显示；前后slide半透明
+      centeredSlides: true,
+      slidesPerView: 1, // 可保证只显示1个slide，其他slide部分溢出
+      spaceBetween: 60, 
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
@@ -25,18 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
       keyboard: {
         enabled: true,
       },
+      // 禁止自动高度，以便卡片保持一致高度
+      autoHeight: false, 
     });
   });
   
   /*******************************************************
-   * 1) 图片放大预览 (与你原先的代码类似)
+   * 1) 图片放大预览
    *******************************************************/
   const modal = document.createElement("div");
   modal.classList.add("modal");
   modal.innerHTML = `
-      <span class="close">&times;</span>
-      <img class="modal-content" id="modal-img">
-      <div id="caption"></div>
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+    <div id="caption"></div>
   `;
   document.body.appendChild(modal);
   
@@ -44,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const captionText = document.getElementById("caption");
   const closeModal = modal.querySelector(".close");
   
-  // 由于此脚本执行时，scores-gallery 可能还未渲染，需要事件委托或延迟
   function initGalleryPreview() {
     const galleryImages = document.querySelectorAll(".scores-gallery img");
     galleryImages.forEach((img) => {
@@ -103,12 +108,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   /*******************************************************
-   * 3) 监听滚轮事件来实现上下翻页(可选)
+   * 3) 监听滚轮事件(已注释掉) - 如果不需要滚轮翻页，就保留注释
    *******************************************************/
-  // 如果想让用户滚轮也能翻页，可以简单监听 wheel 事件：
+  /*
   let scrollTimeout = null;
   window.addEventListener("wheel", (e) => {
-    // 防止用户滚过头或多次触发
     if (scrollTimeout) return;
     scrollTimeout = setTimeout(() => {
       scrollTimeout = null;
@@ -121,4 +125,5 @@ document.addEventListener("DOMContentLoaded", () => {
       showAboutPage();
     }
   });
+  */
   
