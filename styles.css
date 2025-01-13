@@ -32,13 +32,16 @@ footer {
     color: #777;
 }
 
-/* Flexbox for About Me section */
+/* Flexbox layout for About Me section */
 #about-me {
     display: flex;
     flex-wrap: wrap; /* Allow wrapping for smaller screens */
     gap: 20px; /* Add space between items */
-    margin-bottom: 40px;
     align-items: center; /* Align items vertically */
+    justify-content: center; /* Center horizontally */
+    margin-bottom: 40px;
+    height: auto;
+    min-height: 300px;
 }
 
 #about-me .profile-pic {
@@ -54,12 +57,21 @@ footer {
     max-width: 800px;
 }
 
+/* Add centering for when the container has sufficient space */
+@media (min-width: 900px) and (min-height: 500px) {
+    #about-me {
+        height: calc(100vh - 120px); /* Adjust based on header/footer height */
+        justify-content: center; /* Center horizontally */
+    }
+}
+
+/* Adjust for smaller screens */
 @media (max-width: 820px) {
     #about-me {
-        flex-direction: column; /* Stack vertically on small screens */
-        align-items: center; /* Center-align for smaller screens */
+        flex-direction: column; /* Stack vertically */
+        align-items: center;
     }
     #about-me .summary {
-        max-width: 95%; /* Adjust max width for small screens */
+        max-width: 95%;
     }
 }
