@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pageAbout.classList.add("visible-page");
     pageExp.classList.add("not-visible");
   
-    // 初始化 Swiper：Coverflow + 放慢速度
+    // 初始化 Swiper：Coverflow + 再度放慢速度
     const swiper = new Swiper('.swiper-container', {
       effect: 'coverflow',
       coverflowEffect: {
@@ -24,7 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
       centeredSlides: true,
       slidesPerView: 'auto',
       loop: false,
-      speed: 1200, // 再度放慢动画，帧率更平滑
+  
+      // speed 默认300~600，这里改到1200再慢一倍
+      speed: 1200,
+  
+      // Swiper 其它配置
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
@@ -92,30 +96,30 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   /**
-   * 切换到体验(Experience)页面:
+   * 切换到 Experience 页面:
    *  - 隐藏 #page-about
    *  - 显示 #page-experience
-   *  - 隐藏主标题(#main-title)
+   *  - 隐藏主标题 (#main-title) => .hidden-title
    */
   function showExperiencePage() {
     const pageAbout = document.getElementById("page-about");
     const pageExp = document.getElementById("page-experience");
   
-    // 切换可见性
     pageAbout.classList.remove("visible-page");
     pageAbout.classList.add("not-visible");
+  
     pageExp.classList.remove("not-visible");
     pageExp.classList.add("visible-page");
   
-    // 隐藏主标题
+    // 隐藏标题
     mainTitle?.classList.add("hidden-title");
   }
   
   /**
-   * 切换回 About (page-about):
+   * 切换回 About Me 页面:
    *  - 隐藏 #page-experience
    *  - 显示 #page-about
-   *  - 显示主标题(#main-title)
+   *  - 显示主标题 (#main-title)
    */
   function showAboutPage() {
     const pageAbout = document.getElementById("page-about");
@@ -123,10 +127,11 @@ document.addEventListener("DOMContentLoaded", () => {
   
     pageExp.classList.remove("visible-page");
     pageExp.classList.add("not-visible");
+  
     pageAbout.classList.remove("not-visible");
     pageAbout.classList.add("visible-page");
   
-    // 恢复主标题
+    // 恢复标题
     mainTitle?.classList.remove("hidden-title");
   }
   

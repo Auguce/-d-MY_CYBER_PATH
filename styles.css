@@ -57,56 +57,91 @@
       rgba(255,255,255,0) 100%
     );
   }
-  /* about-container 让标题 + 照片 + 文本在同一滚动容器中 */
+  /* about-container 让 标题 + 照片 + 文本 在同一滚动容器中 */
   .about-container {
     width: 90%;
     max-width: 1200px;
     margin: 80px auto;
     display: flex;
+    /* 初始设为 row (默认)；但通过媒体查询做更细分 */
     gap: 20px;
     align-items: flex-start;
     overflow-y: auto; 
-    max-height: calc(100% - 120px); 
-    /* 留出上下空间给箭头按钮 */
+    max-height: calc(100% - 120px);
     box-sizing: border-box;
     position: relative;
   }
   
-  /* 主标题：大屏竖排，小屏横排 */
+  /* 
+    主标题 #main-title
+    - 默认横排
+    - 仅在大屏 (≥1200px) 改为竖排
+  */
   #main-title {
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: rgba(60,60,60,0.6); /* 半透明灰 */
     background: linear-gradient(90deg, #999 0%, #666 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; 
-    /* 渐变文字 + 半透明 */
+    margin-bottom: 10px; 
     line-height: 1.4;
     transition: all 0.5s ease;
-    margin-right: 20px; 
-    /* 大屏时竖排: writing-mode: vertical-rl */
   }
   
-  /* 大屏幕：竖排标题 + 横向排布 (title - img - text) */
+  /* ========== 媒体查询 ========== */
+  
+  /* (A) 大屏 >=1200px：标题竖排 + 照片 + 文本并排 */
   @media (min-width: 1200px) {
+    .about-container {
+      flex-direction: row; /* 标题 - 照片 - 文本 横向排列 */
+      align-items: flex-start;
+    }
     #main-title {
       writing-mode: vertical-rl;
       text-orientation: mixed;
-      font-size: 2.2rem;
+      font-size: 2.0rem;
+      margin-bottom: 0;  /* 不再占据额外空间 */
+      margin-right: 20px;
     }
   }
   
-  /* 小屏幕：标题横排放在上方 */
-  @media (max-width: 1199px) {
+  /* (B) 中屏 900px ~ 1199px：标题横排在上方，照片和文本并排 */
+  @media (max-width: 1199px) and (min-width: 900px) {
+    .about-container {
+      flex-direction: row; /* 让容器内部元素横向排列 */
+      align-items: flex-start;
+    }
     #main-title {
       writing-mode: horizontal-tb;
       text-orientation: upright;
       font-size: 1.8rem;
       margin-bottom: 10px;
+      /* 占整宽：让标题单独一列 */
+      width: 100%;
+    }
+    /* 照片与文本保持并排 */
+    .profile-pic {
+      margin-top: 20px; 
     }
   }
   
-  /* 让标题在 Experience 页面隐藏：由 JS 动态添加/移除 .hidden-title */
+  /* (C) 小屏 <900px：标题横排在上方，然后照片、文本上下排 */
+  @media (max-width: 899px) {
+    .about-container {
+      flex-direction: column; /* 标题 - 照片 - 文本 纵向 */
+      align-items: center;
+    }
+    #main-title {
+      writing-mode: horizontal-tb;
+      text-orientation: upright;
+      font-size: 1.6rem;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* 隐藏标题的类 */
   .hidden-title {
     display: none !important;
   }
@@ -134,15 +169,6 @@
     margin-bottom: 1em;
   }
   
-  /* 小屏下，标题 / 照片 / 文本上下排 */
-  @media (max-width: 900px) {
-    .about-container {
-      flex-direction: column;
-      align-items: center;
-      max-height: calc(100% - 120px);
-    }
-  }
-  
   /* ========== 向下箭头按钮 ========== */
   .arrow-down {
     position: absolute;
@@ -160,7 +186,7 @@
     cursor: pointer;
     opacity: 0.8;
     transition: opacity 0.3s;
-    z-index: 99; /* 足够高以便点击 */
+    z-index: 99; /* 保证在最上层可点击 */
   }
   .arrow-down:hover {
     opacity: 1;
@@ -174,7 +200,7 @@
       rgba(233,239,245,0.6) 85%,
       rgba(233,239,245,0) 100%
     );
-    padding-top: 60px; /* 让卡片下移，给上方留空 */
+    padding-top: 60px; /* 给上方留空间 */
     box-sizing: border-box;
   }
   
@@ -192,7 +218,7 @@
     display: block;
   }
   
-  /* 单个卡片样式 */
+  /* 卡片样式：再拓宽50%，由 900px -> 1350px */
   .dark-section {
     background: #fff;
     border-left: 5px solid #2a5d84;
@@ -201,7 +227,7 @@
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   
-    max-width: 900px;
+    max-width: 1350px; /* 由900增至1350 */
     width: 90%;
     height: auto; 
     overflow-y: auto;
@@ -260,7 +286,7 @@
   /* Swiper 默认控件样式 */
   .swiper-button-prev, .swiper-button-next {
     color: #333;
-    z-index: 99; /* 保证可点击 */
+    z-index: 99;
   }
   .swiper-pagination-bullet-active {
     background: #333;
