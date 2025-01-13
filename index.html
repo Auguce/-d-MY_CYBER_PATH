@@ -3,34 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Cybersecurity Journey - Advanced Layout</title>
+  <title>My Cybersecurity Journey - Dynamic Layout</title>
 
   <!-- Swiper CSS（CDN） -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/swiper/swiper-bundle.min.css"
   />
-  <!-- 自定义样式文件 -->
+  <!-- 自定义样式文件（需与 scripts.js 同目录） -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="app">
 
     <!-- 
-      #main-title：根据屏幕大小，可能在左上角竖排(大屏),
-                  或顶部横排(中小屏). 
-      半透明渐变灰字体，满足“加粗、半透明、渐变”需求。
+      [页1] About Me：
+      1) 大屏下，标题竖排在左侧、照片在中间、文本在右侧
+      2) 小屏下，标题与照片、文本依次往上放
+      3) 标题随 about-container 一起滚动，不再固定
     -->
-    <div id="main-title">My Cybersecurity Journey</div>
-
-    <!-- ========== [页1] About Me ========== -->
     <section id="page-about" class="page visible-page">
-      <!-- 
-        原先 <header> 中的标题移除，改由 #main-title 控制
-        保留 About Me 照片与文本 
-      -->
       <div class="about-container">
+        
+        <!-- 主标题：大屏竖排，小屏横排；Experience 时隐藏（在 scripts.js 中切换类名） -->
+        <div id="main-title">My Cybersecurity Journey</div>
+        
+        <!-- 照片 -->
         <img src="profile.jpg" alt="My Profile Picture" class="profile-pic" />
+        
+        <!-- About Me 文本 -->
         <div class="summary">
           <h2>Binyu Wang</h2>
           <p>
@@ -51,7 +52,12 @@
     </section>
     <!-- /#page-about -->
 
-    <!-- ========== [页2] 经历/项目 (Swiper coverflow) ========== -->
+    <!-- 
+      [页2] 经历 / 项目 (Swiper Coverflow):
+      1) 主标题在这里隐藏
+      2) 增加 Swiper speed，更慢动画，更平滑帧率
+      3) 小屏下按钮不被遮挡，可点击
+    -->
     <section id="page-experience" class="page not-visible">
 
       <!-- Swiper 主容器：左右翻页的核心 -->
@@ -69,9 +75,7 @@
               This project delved into the innovative Kanter-Kinzel-Kanter (K-K-K) protocol, which employs neural networks for secure key exchange. 
               Under the guidance of Professor Alexei Lisitsa, I explored the theoretical foundations of the protocol, analyzed its resilience to attacks, and developed a Python-based prototype to simulate its operation in real-world scenarios.
             </p>
-            <p>
-              <strong>My work included:</strong>
-            </p>
+            <p><strong>My work included:</strong></p>
             <ul>
               <li>Designing a neural network structure with defined weight update rules to implement the K-K-K protocol.</li>
               <li>Building and testing synchronization mechanisms between communication parties (Alice and Bob).</li>
@@ -314,7 +318,8 @@
             </p>
           </div>
           <!-- /Slide 5 -->
-        </div>
+
+        </div> <!-- /swiper-wrapper -->
 
         <!-- Swiper 分页指示点 -->
         <div class="swiper-pagination"></div>
@@ -332,7 +337,7 @@
 
   <!-- Swiper JS (CDN) -->
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  <!-- 自定义脚本（记得与 styles.css 同目录） -->
+  <!-- 自定义脚本 -->
   <script src="scripts.js"></script>
 </body>
 </html>

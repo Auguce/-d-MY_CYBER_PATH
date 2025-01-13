@@ -1,12 +1,17 @@
+/*******************************************************
+ * 0) DOM Ready
+ *******************************************************/
 document.addEventListener("DOMContentLoaded", () => {
-    // 初始状态: About Me 可见, Experience 不可见
+    // 先获取关键节点
     const pageAbout = document.getElementById("page-about");
     const pageExp = document.getElementById("page-experience");
+    const mainTitle = document.getElementById("main-title");
   
+    // 初始状态: 显示 About Me，不显示 Experience
     pageAbout.classList.add("visible-page");
     pageExp.classList.add("not-visible");
   
-    // 初始化 Swiper（coverflow），速度减半
+    // 初始化 Swiper：Coverflow + 放慢速度
     const swiper = new Swiper('.swiper-container', {
       effect: 'coverflow',
       coverflowEffect: {
@@ -19,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       centeredSlides: true,
       slidesPerView: 'auto',
       loop: false,
-      speed: 600, /* 动画速度更慢 */
+      speed: 1200, // 再度放慢动画，帧率更平滑
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
@@ -35,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   /*******************************************************
-   * 图片放大预览
+   * 1) 图片放大预览
    *******************************************************/
   const modal = document.createElement("div");
   modal.classList.add("modal");
@@ -73,10 +78,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   /*******************************************************
-   * 上下翻页按钮逻辑
+   * 2) 上下翻页按钮逻辑
    *******************************************************/
   const btnToExp = document.getElementById("btn-to-experience");
   const btnToAbout = document.getElementById("btn-to-about");
+  const mainTitle = document.getElementById("main-title");
   
   btnToExp?.addEventListener("click", () => {
     showExperiencePage();
@@ -85,30 +91,47 @@ document.addEventListener("DOMContentLoaded", () => {
     showAboutPage();
   });
   
+  /**
+   * 切换到体验(Experience)页面:
+   *  - 隐藏 #page-about
+   *  - 显示 #page-experience
+   *  - 隐藏主标题(#main-title)
+   */
   function showExperiencePage() {
     const pageAbout = document.getElementById("page-about");
     const pageExp = document.getElementById("page-experience");
   
+    // 切换可见性
     pageAbout.classList.remove("visible-page");
     pageAbout.classList.add("not-visible");
-  
     pageExp.classList.remove("not-visible");
     pageExp.classList.add("visible-page");
+  
+    // 隐藏主标题
+    mainTitle?.classList.add("hidden-title");
   }
   
+  /**
+   * 切换回 About (page-about):
+   *  - 隐藏 #page-experience
+   *  - 显示 #page-about
+   *  - 显示主标题(#main-title)
+   */
   function showAboutPage() {
     const pageAbout = document.getElementById("page-about");
     const pageExp = document.getElementById("page-experience");
   
     pageExp.classList.remove("visible-page");
     pageExp.classList.add("not-visible");
-  
     pageAbout.classList.remove("not-visible");
     pageAbout.classList.add("visible-page");
+  
+    // 恢复主标题
+    mainTitle?.classList.remove("hidden-title");
   }
   
   /*******************************************************
-   * 滚轮事件(可选) - 已注释
+   * 3) 滚轮事件(可选) - 暂时注释
    *******************************************************/
   /*
   let scrollTimeout = null;
@@ -119,8 +142,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1200);
   
     if (e.deltaY > 0) {
+      // 向下滚轮 -> showExperiencePage()
       showExperiencePage();
     } else {
+      // 向上滚轮 -> showAboutPage()
       showAboutPage();
     }
   });

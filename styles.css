@@ -7,7 +7,7 @@
   html, body {
     width: 100%;
     height: 100%;
-    overflow: hidden; /* 禁用默认滚动 */
+    overflow: hidden; /* 禁用默认滚动，由 JS 控制上下翻页 */
     font-family: Arial, sans-serif;
     background: #f4f4f4;
     line-height: 1.6;
@@ -19,58 +19,11 @@
     position: relative;
   }
   
-  /* ================== 主标题 ==================
-     需求: 
-     - 字体渐变灰色、加粗、半透明
-     - 如果窗口足够宽(大屏), 竖排在左侧;
-     - 否则, 横排在 about-container 的上方
-  */
-  #main-title {
-    position: absolute;
-    top: 20px;
-    left: 20px; /* 初始位置（在足够大屏幕下竖排） */
-    font-weight: bold;
-    font-size: 2rem;
-    color: rgba(60,60,60,0.6); /* 半透明灰 */
-    z-index: 10; /* 盖在最上层 */
-    writing-mode: vertical-rl; /* 竖排文字(从上往下) */
-    text-orientation: mixed;
-    background: linear-gradient(90deg, #999 0%, #666 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    /* 让文字背景渐变; 需要clip text + fill transparent */
-    transition: all 0.5s ease;
-  }
-  
-  /* ============== 媒体查询: 大屏 -> 竖排; 中小屏 -> 横排 ============== */
-  /* 当屏幕足够宽(>= 1400px 仅供参考), 并且能容纳竖排标题 + 左右排布不遮挡 */
-  @media (min-width: 1400px) {
-    #main-title {
-      /* 竖排, 左侧 */
-      top: 20px;
-      left: 20px;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: 2.2rem;
-    }
-  }
-  
-  /* 当小于1400px时, 标题改为横排 */
-  @media (max-width: 1399px) {
-    #main-title {
-      writing-mode: horizontal-tb;
-      text-orientation: upright;
-      font-size: 2rem;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-  
-  /* ================== .page 通用样式 ================== */
+  /* ========== 通用 page 样式 ========== */
   .page {
     position: absolute;
-    top: 0; left: 0;
+    top: 0; 
+    left: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -83,6 +36,8 @@
     opacity: 1;
     transform: translateY(0);
   }
+  
+  /* 当页面隐藏时可稍微上/下移动 + 半透明 */
   #page-about.not-visible {
     transform: translateY(-10%);
     opacity: 0.5;
@@ -92,8 +47,9 @@
     opacity: 0.5;
   }
   
-  /* ================== About Me 区域 ================== */
+  /* ========== About Me ========== */
   #page-about {
+    /* 背景渐变：顶部不透明，越往下越透明 */
     background: linear-gradient(
       to bottom,
       rgba(255,255,255,0.98) 60%,
@@ -101,19 +57,61 @@
       rgba(255,255,255,0) 100%
     );
   }
-  /* 容器可滚动, max-height 限制, 使小屏能滚动查看 */
+  /* about-container 让标题 + 照片 + 文本在同一滚动容器中 */
   .about-container {
-    width: 80%;
-    max-width: 1000px;
+    width: 90%;
+    max-width: 1200px;
     margin: 80px auto;
     display: flex;
     gap: 20px;
     align-items: flex-start;
-    overflow-y: auto; /* 关键: 可滚动 */
+    overflow-y: auto; 
     max-height: calc(100% - 120px); 
-    /* 留120px给按钮,标题等; 视需要可再调大 */
+    /* 留出上下空间给箭头按钮 */
+    box-sizing: border-box;
+    position: relative;
   }
   
+  /* 主标题：大屏竖排，小屏横排 */
+  #main-title {
+    font-weight: bold;
+    font-size: 2rem;
+    color: rgba(60,60,60,0.6); /* 半透明灰 */
+    background: linear-gradient(90deg, #999 0%, #666 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    /* 渐变文字 + 半透明 */
+    line-height: 1.4;
+    transition: all 0.5s ease;
+    margin-right: 20px; 
+    /* 大屏时竖排: writing-mode: vertical-rl */
+  }
+  
+  /* 大屏幕：竖排标题 + 横向排布 (title - img - text) */
+  @media (min-width: 1200px) {
+    #main-title {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 2.2rem;
+    }
+  }
+  
+  /* 小屏幕：标题横排放在上方 */
+  @media (max-width: 1199px) {
+    #main-title {
+      writing-mode: horizontal-tb;
+      text-orientation: upright;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* 让标题在 Experience 页面隐藏：由 JS 动态添加/移除 .hidden-title */
+  .hidden-title {
+    display: none !important;
+  }
+  
+  /* 照片 */
   .profile-pic {
     width: 200px;
     height: auto;
@@ -121,21 +119,22 @@
     flex-shrink: 0;
   }
   
+  /* About Me 文本 */
   .summary {
     flex: 1;
     text-align: justify;
     font-size: 1rem;
     margin-right: 10px;
   }
-  .summary p {
-    margin-bottom: 1em;
-  }
   .summary h2 {
     font-size: 1.6rem;
     margin-bottom: 0.8em;
   }
+  .summary p {
+    margin-bottom: 1em;
+  }
   
-  /* 当空间不够时, 照片和文字上下排布 */
+  /* 小屏下，标题 / 照片 / 文本上下排 */
   @media (max-width: 900px) {
     .about-container {
       flex-direction: column;
@@ -161,13 +160,13 @@
     cursor: pointer;
     opacity: 0.8;
     transition: opacity 0.3s;
-    z-index: 3;
+    z-index: 99; /* 足够高以便点击 */
   }
   .arrow-down:hover {
     opacity: 1;
   }
   
-  /* ================== 经历卡片页面 ================== */
+  /* ========== 经历卡片页面 ========== */
   #page-experience {
     background: linear-gradient(
       to top,
@@ -175,17 +174,17 @@
       rgba(233,239,245,0.6) 85%,
       rgba(233,239,245,0) 100%
     );
-    /* 让卡片区域稍微往下移,给上面的 about me 留空间 */
-    padding-top: 60px; 
+    padding-top: 60px; /* 让卡片下移，给上方留空 */
     box-sizing: border-box;
   }
   
-  /* Swiper */
+  /* Swiper 容器 */
   .swiper-container {
     width: 100%;
     height: calc(100% - 100px); 
     margin: 0 auto;
     box-sizing: border-box;
+    position: relative;
   }
   
   /* 让文字正常换行 */
@@ -193,7 +192,7 @@
     display: block;
   }
   
-  /* 卡片样式 */
+  /* 单个卡片样式 */
   .dark-section {
     background: #fff;
     border-left: 5px solid #2a5d84;
@@ -202,13 +201,12 @@
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   
-    max-width: 900px; 
+    max-width: 900px;
     width: 90%;
     height: auto; 
     overflow-y: auto;
   }
   
-  /* 文字排版 */
   .dark-section h2 {
     font-size: 1.6rem;
     margin-bottom: 0.6em;
@@ -226,7 +224,7 @@
     text-align: justify;
   }
   
-  /* 向上箭头按钮 */
+  /* ========== 向上箭头按钮 ========== */
   .arrow-up {
     position: absolute;
     top: 20px; 
@@ -243,7 +241,7 @@
     cursor: pointer;
     opacity: 0.8;
     transition: opacity 0.3s;
-    z-index: 3;
+    z-index: 99;
   }
   .arrow-up:hover {
     opacity: 1;
@@ -262,6 +260,7 @@
   /* Swiper 默认控件样式 */
   .swiper-button-prev, .swiper-button-next {
     color: #333;
+    z-index: 99; /* 保证可点击 */
   }
   .swiper-pagination-bullet-active {
     background: #333;
@@ -326,16 +325,5 @@
     color: #fff;
     margin-top: 10px;
     font-size: 18px;
-  }
-  
-  /* 
-    小屏幕适配:
-    - 标题太长时, 缩小字号
-    - about me 上下排布
-  */
-  @media (max-width: 900px) {
-    #main-title {
-      font-size: 1.8rem;
-    }
   }
   
