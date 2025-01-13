@@ -22,11 +22,17 @@ main {
 }
 
 section {
-    background: #f9f9f9; /* Set light background */
-    padding: 20px;
     margin-bottom: 20px;
+    padding: 20px;
+    background: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark section for courses and projects */
+.dark-section {
+    background: #e9eff5; /* Light blue-gray background */
+    border-left: 5px solid #2a5d84; /* Highlight border */
 }
 
 /* Section titles */
@@ -65,13 +71,46 @@ section ul li {
     font-size: 1rem;
 }
 
-/* Specific styles for dark background sections */
-.dark-section {
-    background: #e9eff5; /* Light blue-gray background */
-    border-left: 5px solid #2a5d84; /* Add a highlight border */
+/* Layout for the About Me section */
+#about-me {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    gap: 20px;
+    align-items: center; /* Align items vertically */
+    justify-content: center; /* Center horizontally */
+    margin-bottom: 40px;
+    background: #fff; /* White background for About Me */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Styling for modal images */
+#about-me .profile-pic {
+    max-width: 200px;
+    height: auto;
+    border-radius: 10px;
+    flex-shrink: 0; /* Prevent shrinking */
+    border: 2px solid #ddd;
+}
+
+#about-me .summary {
+    flex: 1; /* Take up remaining space */
+    text-align: justify;
+    max-width: 800px;
+}
+
+/* Ensure proper spacing and alignment for smaller screens */
+@media (max-width: 820px) {
+    #about-me {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;
+    }
+    #about-me .summary {
+        max-width: 95%;
+    }
+}
+
+/* Modal styling for image zoom */
 .scores-gallery {
     display: flex;
     flex-wrap: wrap;
