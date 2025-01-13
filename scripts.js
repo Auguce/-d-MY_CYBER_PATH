@@ -6,23 +6,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const pageAbout = document.getElementById("page-about");
     const pageExp = document.getElementById("page-experience");
   
-    // 如果没在 HTML 里手动写好类名，就在此强制
     pageAbout.classList.add("visible-page");
     pageExp.classList.add("not-visible");
   
-    // 初始化 Swiper（只在 Experience 页面内部）
+    // 初始化 Swiper
     const swiper = new Swiper('.swiper-container', {
-      effect: 'coverflow',          // 关键：coverflow效果
+      effect: 'coverflow',
       coverflowEffect: {
-        rotate: 0,                  // 不进行上下翻转
-        stretch: -100,             // 卡片间距离(负值会让卡片更密集在中央)
-        depth: 200,                // 卡片分层深度
-        modifier: 1,               // 效果增幅
-        slideShadows: false,       // 关闭阴影
+        rotate: 0,
+        stretch: -100,
+        depth: 200,
+        modifier: 1,
+        slideShadows: false,
       },
-      centeredSlides: true,         // 当前slide居中
-      slidesPerView: 'auto',        // 根据内容自动计算宽度
+      centeredSlides: true,
+      slidesPerView: 'auto',
       loop: false,
+      // 将翻页速度调为600ms，比默认慢约50%
+      speed: 600,
       pagination: {
         el: '.swiper-pagination',
         clickable: true,

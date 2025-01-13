@@ -31,15 +31,13 @@
     z-index: 1;
     opacity: 0; /* 默认不可见 */
   }
-  
-  /* 当页面处于可见时 */
   .visible-page {
     z-index: 2;
     opacity: 1;
     transform: translateY(0);
   }
   
-  /* 当页面处于隐藏时，让其稍微上/下+半透明 */
+  /* 当页面隐藏时，可稍微上/下移动 + 半透明，彼此透视 */
   #page-about.not-visible {
     transform: translateY(-10%);
     opacity: 0.5;
@@ -58,7 +56,6 @@
       rgba(255,255,255,0) 100%
     );
   }
-  
   .about-container {
     width: 80%;
     max-width: 1000px;
@@ -67,15 +64,11 @@
     gap: 20px;
     align-items: flex-start;
   }
-  
-  /* About Me里的头像 */
   .about-container .profile-pic {
     width: 200px;
     height: auto;
     border-radius: 10px;
   }
-  
-  /* About Me里的文本排版 */
   .about-container .summary {
     flex: 1;
     text-align: justify;
@@ -89,17 +82,24 @@
     margin-bottom: 0.8em;
   }
   
-  /* 向下箭头按钮 - 底部居中, 更大更易点 */
+  /* ========== 向下箭头按钮 ========== */
   .arrow-down {
     position: absolute;
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3rem; 
+    width: 120px;    /* 又宽又矮 */
+    height: 50px;
+    background: rgba(0,0,0,0.3); /* 半透明背景 */
+    border-radius: 10px;
+    text-align: center;
+    line-height: 50px; /* 让符号上下居中 */
+    font-size: 2rem; 
+    color: #fff;
     cursor: pointer;
-    color: #333;
-    opacity: 0.7;
+    opacity: 0.8;
     transition: opacity 0.3s;
+    z-index: 3; /* 确保按钮不被卡片盖住 */
   }
   .arrow-down:hover {
     opacity: 1;
@@ -111,17 +111,21 @@
       to top,
       rgba(233,239,245,0.98) 60%,
       rgba(233,239,245,0.6) 85%,
-      rgba(233,239,245,0.0) 100%
+      rgba(233,239,245,0) 100%
     );
   }
   
-  /* Swiper 容器尽量占满空间 */
+  /* Swiper 容器尽量占满剩余空间 */
   .swiper-container {
     width: 100%;
     height: calc(100% - 100px); 
-    /* 预留顶部和底部空间给箭头或标题 */
     margin: 0 auto;
     box-sizing: border-box;
+  }
+  
+  /* 修正 Swiper Slide 默认的排版混乱 - 让文字正常换行 */
+  .swiper-slide {
+    display: block;
   }
   
   /* 单个卡片（Slide）的样式 */
@@ -133,10 +137,12 @@
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   
-    /* 卡片宽度调大一点 */
-    max-width: 900px;
+    /* 卡片宽度加大50%：原900 -> 1350 */
+    max-width: 1350px;
   
-    /* 高度自动，内部可滚 */
+    /* 加上自适应保障在手机端不太溢出 */
+    width: 90%;
+    /* 内容较多时可垂直滚动 */
     height: auto; 
     overflow-y: auto;
   }
@@ -159,35 +165,35 @@
     text-align: justify;
   }
   
-  /* ========== 向上箭头按钮 - 放在页面顶部 ========== */
+  /* ========== 向上箭头按钮 - 顶部居中 ========== */
   .arrow-up {
     position: absolute;
     top: 40px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3rem;
+    width: 120px;
+    height: 50px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 2rem; 
+    color: #fff;
     cursor: pointer;
-    color: #333;
-    opacity: 0.7;
+    opacity: 0.8;
     transition: opacity 0.3s;
+    z-index: 3;
   }
   .arrow-up:hover {
     opacity: 1;
   }
   
   /* ========== Swiper Coverflow 效果 ========== */
-  .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
   .swiper-slide-active {
-    /* 当前slide 全不透明 */
     opacity: 1;
   }
   .swiper-slide-prev,
   .swiper-slide-next {
-    /* 邻居slide稍微透明一点 */
     opacity: 0.6;
     transform: scale(0.9);
   }
@@ -259,5 +265,26 @@
     color: #fff;
     margin-top: 10px;
     font-size: 18px;
+  }
+  
+  /* ========== 媒体查询：在小屏幕下保持合理宽度 ========== */
+  @media (max-width: 768px) {
+    .dark-section {
+      max-width: 95%;
+      width: 95%;
+    }
+    .arrow-down, .arrow-up {
+      width: 100px;
+      height: 45px;
+      font-size: 1.5rem;
+      line-height: 45px;
+    }
+    .about-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .about-container .profile-pic {
+      margin-bottom: 20px;
+    }
   }
   
