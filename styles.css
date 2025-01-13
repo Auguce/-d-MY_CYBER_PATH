@@ -1,206 +1,217 @@
-/* =================== */
-/* 全局基础样式与重置 */
-/* =================== */
-html, body {
-    height: 100%;
+/* ========== 基础重置 ========== */
+* {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
     box-sizing: border-box;
-}
-
-*, *::before, *::after {
-    box-sizing: inherit;
-}
-
-/* ======================= */
-/* Header & Footer 样式 */
-/* ======================= */
-header {
-    background: #333;
-    color: #fff;
-    padding: 1rem;
-    text-align: center;
-}
-
-footer {
-    text-align: center;
-    margin: 20px 0;
-    color: #777;
-    font-size: 0.9rem;
-}
-
-/* =================== */
-/* About Me 样式设置  */
-/* =================== */
-#about-me {
-    /* 固定在页面顶端，避免随 Swiper 滚动 */
-    position: fixed;
-    top: 80px; 
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 999;
-    width: 80%; 
-    max-width: 1200px; 
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-
-    /* 下方为内部布局设置，可根据需求调节 */
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 重要：禁用浏览器默认滚动，让我们用JS手动控制 */
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+  }
+  
+  /* ========== #app 主容器 ========== */
+  #app {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  
+  /* ========== 通用 .page 样式 ========== */
+  .page {
+    position: absolute; /* 绝对定位，彼此重叠 */
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 内部若需要滚动，可酌情设置 */
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    z-index: 1; /* 默认在底层 */
+    opacity: 0; /* 默认不可见 */
+  }
+  
+  /* 当前正在显示的页面 */
+  .visible-page {
+    z-index: 2;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* ========== About Me 页面 ========== */
+  #page-about {
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,1) 70%,
+      rgba(255,255,255,0.5) 90%,
+      rgba(255,255,255,0) 100%
+    ); 
+    /* 这条渐变只是示例：顶部完全不透明，越往下越透，看起来能隐约看到后面的内容。 */
+    /* 你可以改成更明显或更微妙的渐变。 */
+  }
+  
+  /* 内容容器，留出一些滚动或内边距 */
+  .about-container {
+    width: 80%;
+    max-width: 1000px;
+    margin: 80px auto; /* 距离上方留点空间 */
     display: flex;
     gap: 20px;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-/* 关于头像与文本的布局 */
-#about-me .profile-pic {
-    max-width: 200px;
+    align-items: flex-start;
+  }
+  
+  /* 头像 */
+  .about-container .profile-pic {
+    width: 200px;
     height: auto;
     border-radius: 10px;
-    flex-shrink: 0;
-}
-
-#about-me .summary {
+  }
+  
+  /* 文本区 */
+  .about-container .summary {
     flex: 1;
-    max-width: 800px;
     text-align: justify;
-}
-
-/* ======================= */
-/* Swiper 主容器样式设置 */
-/* ======================= */
-/* 让 Swiper 充满除去 About Me 区域外的可视高度 */
-.swiper-container {
-    /* 
-       计算可用高度: 浏览器高度 - (About Me 大约占的高度 + header 高度 + margin)
-       可根据实际页面调整，下面给出一个可能的值:
-    */
-    height: calc(100vh - 350px);
-    width: 100%;
-    margin-top: 20px; /* 与 About Me 保持一些垂直距离 */
-    box-sizing: border-box;
-}
-
-/* Swiper slides */
-.swiper-slide {
-    /* 让 slide 内部内容可垂直滚动（若文字较多） */
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding-bottom: 40px;
-}
-
-/* ========================= */
-/* Dark section / Projects  */
-/* ========================= */
-.dark-section {
-    background: #e9eff5; /* 浅蓝灰色背景 */
+  }
+  
+  /* 向下箭头按钮 */
+  .arrow-down {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    cursor: pointer;
+    color: #333;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .arrow-down:hover {
+    opacity: 1;
+  }
+  
+  /* ========== Experience 页面 ========== */
+  #page-experience {
+    background: linear-gradient(
+      to top,
+      rgba(233,239,245,1) 70%,
+      rgba(233,239,245,0.6) 85%,
+      rgba(233,239,245,0) 100%
+    );
+    /* 这里做个自下而上的渐变，留出顶部可以透过来，让人看到 About Me 的影子 */
+    /* 你也可以加上 background-color: #e9eff5; 再做渐变叠加。 */
+  }
+  
+  /* Swiper 容器在经历页中占据可用区域 */
+  #page-experience .swiper-container {
+    width: 90%;
+    height: calc(100% - 100px); /* 算上顶部/底部按钮的空间 */
+    margin: 50px auto 0;
+  }
+  
+  /* Swiper 内部 slide 样式 */
+  .dark-section {
+    background: #e9eff5;
+    border-left: 5px solid #2a5d84;
     padding: 20px;
     border-radius: 10px;
     margin: 20px;
-    border-left: 5px solid #2a5d84;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.dark-section h2 {
-    font-size: 1.8rem;
-    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    height: auto; /* 根据内容自适应 */
+    overflow-y: auto;
+  }
+  
+  /* 向上箭头按钮 */
+  .arrow-up {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    cursor: pointer;
     color: #333;
-    margin-bottom: 15px;
-}
-
-.dark-section h3 {
-    font-size: 1.4rem;
-    color: #555;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
-}
-
-.dark-section p {
-    font-size: 1rem;
-    margin-bottom: 15px;
-    text-align: justify;
-}
-
-.dark-section ul {
-    margin: 15px 0;
-    padding-left: 20px;
-}
-
-.dark-section ul li {
-    margin-bottom: 10px;
-    font-size: 1rem;
-}
-
-/* ========================= */
-/* 成绩图片画廊 (scores-gallery) */
-/* ========================= */
-.scores-gallery {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .arrow-up:hover {
+    opacity: 1;
+  }
+  
+  /* ========== Swiper 默认控件样式 ========== */
+  .swiper-button-prev, .swiper-button-next {
+    color: #333;
+  }
+  .swiper-pagination-bullet-active {
+    background: #333;
+  }
+  
+  /* ========== 显示/隐藏时的 transform 效果 ========== */
+  /* 当不在可见状态时，可以让页面稍微上移或下移，带有渐隐效果 */
+  #page-about.not-visible {
+    transform: translateY(-10%);
+  }
+  #page-experience.not-visible {
+    transform: translateY(10%);
+    /* 让它在初始时在“更下面” */
+  }
+  
+  /* ========== 画廊图片/Modal 放大 ========== */
+  .scores-gallery {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
-    margin-top: 20px;
-}
-
-.scores-gallery img {
+  }
+  .scores-gallery img {
     width: 100%;
     max-width: 300px;
     height: auto;
+    cursor: pointer;
     border: 2px solid #ddd;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-    cursor: pointer;
-}
-
-.scores-gallery img:hover {
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .scores-gallery img:hover {
     transform: scale(1.05);
     border-color: #333;
-}
-
-/* =================== */
-/* Swiper 默认控件样式 */
-/* =================== */
-.swiper-button-prev,
-.swiper-button-next {
-    color: #333; /* 按钮颜色 */
-}
-
-.swiper-pagination-bullet-active {
-    background: #333; /* 分页高亮 */
-}
-
-/* =================== */
-/* 其他小调优         */
-/* =================== */
-
-/* 留出足够的顶部空白，避免 #about-me 与 header 重叠。
-   如果顶部区域空间不足，可根据自己页面布局进行调节。 */
-body {
-    padding-top: 160px; 
-}
-
-/* 媒体查询 - 小屏幕下可根据需要调整 */
-@media (max-width: 820px) {
-    #about-me {
-        flex-direction: column;
-        align-items: center;
-        top: 60px; 
-        width: 90%;
-    }
-
-    body {
-        padding-top: 240px; /* 保证手机端 About Me 有足够空隙 */
-    }
-
-    .swiper-container {
-        height: calc(100vh - 400px);
-    }
-}
+  }
+  
+  /* Modal 样式（保留你的原需求） */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+  }
+  .modal-content {
+    display: block;
+    margin: auto;
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    border: 3px solid #fff;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+  }
+  .modal .close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .modal .close:hover {
+    color: #ccc;
+  }
+  #caption {
+    text-align: center;
+    color: #fff;
+    margin-top: 10px;
+    font-size: 18px;
+  }
+  
