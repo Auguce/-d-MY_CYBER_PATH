@@ -4,10 +4,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const pageAbout = document.getElementById("page-about");
   const pageExp = document.getElementById("page-experience");
-  // 不再需要单独操作 mainTitle
+  // 不再需要单独操作标题
   // const mainTitle = document.getElementById("main-title");
 
-  // 初始状态: 显示 About Me，不显示 Experience
+  // 初始状态: About Me 可见, Experience 不可见
   pageAbout.classList.add("visible-page");
   pageExp.classList.add("not-visible");
 
@@ -24,9 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     centeredSlides: true,
     slidesPerView: 'auto',
     loop: false,
-    // speed 默认300~600，这里改到1200更慢
-    speed: 1200,
-    // 其它配置
+    speed: 1200, // 动画速度
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
@@ -69,7 +67,6 @@ function initGalleryPreview() {
 }
 initGalleryPreview();
 
-// 关闭模态
 closeModal.addEventListener("click", () => {
   modal.style.display = "none";
 });
@@ -80,74 +77,48 @@ modal.addEventListener("click", (e) => {
 });
 
 /*******************************************************
- * 2) 上下翻页按钮逻辑（先退出，再进入, 不隐藏标题）
+ * 2) 上下翻页按钮逻辑 (同时进行翻页, 不隐藏标题)
  *******************************************************/
 const btnToExp = document.getElementById("btn-to-experience");
 const btnToAbout = document.getElementById("btn-to-about");
 
-btnToExp?.addEventListener("click", () => {
-  showExperiencePage();
-});
-btnToAbout?.addEventListener("click", () => {
-  showAboutPage();
-});
+btnToExp?.addEventListener("click", showExperiencePage);
+btnToAbout?.addEventListener("click", showAboutPage);
 
 /**
- * 切换到 Experience 页面:
- *  1) 先让 #page-about 执行退出动画
- *  2) 等退出动画结束后，再让 #page-experience 进入
- *  注: 不再对 mainTitle 做 hidden-title 处理
+ * 切换到 Experience 页面 (同时进行动画)：
+ *  - pageAbout: visible -> not-visible
+ *  - pageExp: not-visible -> visible
  */
 function showExperiencePage() {
   const pageAbout = document.getElementById("page-about");
   const pageExp = document.getElementById("page-experience");
 
-  // 先让 AboutMe 退出
   pageAbout.classList.remove("visible-page");
   pageAbout.classList.add("not-visible");
 
-  // 监听 AboutMe 的 transitionend
-  function handleTransitionEnd(e) {
-    if (e.propertyName === 'transform' || e.propertyName === 'opacity') {
-      pageAbout.removeEventListener('transitionend', handleTransitionEnd);
-
-      // 现在 Experience 进入
-      pageExp.classList.remove("not-visible");
-      pageExp.classList.add("visible-page");
-    }
-  }
-  pageAbout.addEventListener('transitionend', handleTransitionEnd);
+  pageExp.classList.remove("not-visible");
+  pageExp.classList.add("visible-page");
 }
 
 /**
- * 切换回 About Me 页面:
- *  1) 先让 #page-experience 退出
- *  2) 等退出动画结束后，再让 #page-about 进入
- *  注: 不再对 mainTitle 做 hidden-title 处理
+ * 切换回 About Me 页面 (同时进行动画)：
+ *  - pageExp: visible -> not-visible
+ *  - pageAbout: not-visible -> visible
  */
 function showAboutPage() {
-  const pageAbout = document.getElementById("page-about");
   const pageExp = document.getElementById("page-experience");
+  const pageAbout = document.getElementById("page-about");
 
-  // 先让 Experience 退出
   pageExp.classList.remove("visible-page");
   pageExp.classList.add("not-visible");
 
-  // 监听 Experience 的 transitionend
-  function handleTransitionEnd(e) {
-    if (e.propertyName === 'transform' || e.propertyName === 'opacity') {
-      pageExp.removeEventListener('transitionend', handleTransitionEnd);
-
-      // 让 About Me 进入
-      pageAbout.classList.remove("not-visible");
-      pageAbout.classList.add("visible-page");
-    }
-  }
-  pageExp.addEventListener('transitionend', handleTransitionEnd);
+  pageAbout.classList.remove("not-visible");
+  pageAbout.classList.add("visible-page");
 }
 
 /*******************************************************
- * 3) 滚轮事件(可选) - 暂时注释
+ * 3) 滚轮事件(可选) - 注释
  *******************************************************/
 /*
 let scrollTimeout = null;
