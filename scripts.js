@@ -4,10 +4,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const pageAbout = document.getElementById("page-about");
   const pageExp = document.getElementById("page-experience");
-  // 不再需要单独操作标题
-  // const mainTitle = document.getElementById("main-title");
 
-  // 初始状态: About Me 可见, Experience 不可见
+  // 初始状态: 显示 About Me(visible-page), 不显示 Experience(not-visible)
   pageAbout.classList.add("visible-page");
   pageExp.classList.add("not-visible");
 
@@ -24,7 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
     centeredSlides: true,
     slidesPerView: 'auto',
     loop: false,
-    speed: 1200, // 动画速度
+
+    // speed 默认300~600，这里改到1200让横向翻页也更平滑
+    speed: 1200,
+
+    // 其它配置
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
@@ -67,6 +69,7 @@ function initGalleryPreview() {
 }
 initGalleryPreview();
 
+// 关闭模态
 closeModal.addEventListener("click", () => {
   modal.style.display = "none";
 });
@@ -77,48 +80,52 @@ modal.addEventListener("click", (e) => {
 });
 
 /*******************************************************
- * 2) 上下翻页按钮逻辑 (同时进行翻页, 不隐藏标题)
+ * 2) 上下翻页按钮逻辑（并行动画）
  *******************************************************/
 const btnToExp = document.getElementById("btn-to-experience");
 const btnToAbout = document.getElementById("btn-to-about");
 
-btnToExp?.addEventListener("click", showExperiencePage);
-btnToAbout?.addEventListener("click", showAboutPage);
+btnToExp?.addEventListener("click", () => {
+  showExperiencePage();
+});
+btnToAbout?.addEventListener("click", () => {
+  showAboutPage();
+});
 
 /**
- * 切换到 Experience 页面 (同时进行动画)：
- *  - pageAbout: visible -> not-visible
- *  - pageExp: not-visible -> visible
+ * 同时让 #page-about 退出 & #page-experience 进入
  */
 function showExperiencePage() {
   const pageAbout = document.getElementById("page-about");
   const pageExp = document.getElementById("page-experience");
 
-  pageAbout.classList.remove("visible-page");
-  pageAbout.classList.add("not-visible");
-
+  // 让Experience进入(从 transform: translateY(5%), opacity:0.7 到 0,1)
   pageExp.classList.remove("not-visible");
   pageExp.classList.add("visible-page");
+
+  // 让About退出(从 transform:0, opacity:1 到 -5%,0.7)
+  pageAbout.classList.remove("visible-page");
+  pageAbout.classList.add("not-visible");
 }
 
 /**
- * 切换回 About Me 页面 (同时进行动画)：
- *  - pageExp: visible -> not-visible
- *  - pageAbout: not-visible -> visible
+ * 同时让 #page-experience 退出 & #page-about 进入
  */
 function showAboutPage() {
-  const pageExp = document.getElementById("page-experience");
   const pageAbout = document.getElementById("page-about");
+  const pageExp = document.getElementById("page-experience");
 
-  pageExp.classList.remove("visible-page");
-  pageExp.classList.add("not-visible");
-
+  // 让About进入
   pageAbout.classList.remove("not-visible");
   pageAbout.classList.add("visible-page");
+
+  // 让Experience退出
+  pageExp.classList.remove("visible-page");
+  pageExp.classList.add("not-visible");
 }
 
 /*******************************************************
- * 3) 滚轮事件(可选) - 注释
+ * 3) 滚轮事件(可选) - 暂时注释
  *******************************************************/
 /*
 let scrollTimeout = null;

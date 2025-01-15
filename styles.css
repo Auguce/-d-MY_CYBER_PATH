@@ -8,7 +8,7 @@
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden; /* 禁用默认滚动，改由 JS 上下翻页 */
+  overflow: hidden; /* 禁用默认滚动，改由 JS 来控制翻页 */
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   line-height: 1.6;
@@ -23,25 +23,26 @@ html, body {
 /* ========== 通用 page 样式 ========== */
 .page {
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
 
-  /* 让动画更柔和: 0.9s ease-in-out + will-change */
+  /* 同时动画: 0.9s ease-in-out, GPU加速 */
   transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
   will-change: transform, opacity;
 
   z-index: 1;
-  opacity: 0;
+  opacity: 0; /* 初始不可见 */
 }
 .visible-page {
-  z-index: 2;
+  z-index: 2; /* 新页面在最上 */
   opacity: 1;
   transform: translateY(0);
 }
 
-/* 当页面隐藏时 => ±5% translate, 0.7 opacity */
+/* 退出中的页面: transform±5%, opacity:0.7 */
 #page-about.not-visible {
   transform: translateY(-5%);
   opacity: 0.7;
@@ -61,14 +62,13 @@ html, body {
   );
 }
 
-/* about-container 中包含标题和 row-lateral */
+/* about-container: 包含标题 + row-lateral(照片 + 文本) */
 .about-container {
   width: 90%;
   max-width: 1200px;
   margin: 80px auto;
   display: flex;
-  /* 默认列方向 */
-  flex-direction: column;
+  flex-direction: column; /* 默认列方向 */
   gap: 20px;
   align-items: flex-start;
   overflow-y: auto;
@@ -77,7 +77,7 @@ html, body {
   position: relative;
 }
 
-/* 主标题：默认横排 */
+/* 标题: 不再隐藏 */
 #main-title {
   font-weight: bold;
   font-size: 1.8rem;
@@ -89,7 +89,7 @@ html, body {
   transition: all 0.5s ease;
 }
 
-/* row-lateral: 照片+文本的容器 */
+/* row-lateral: 照片 + 文本 */
 .row-lateral {
   display: flex;
   flex-direction: row;
@@ -106,7 +106,7 @@ html, body {
   flex-shrink: 0;
 }
 
-/* 文本区域 */
+/* About Me 文本区 */
 .summary {
   flex: 1;
   text-align: justify;
@@ -121,16 +121,11 @@ html, body {
   margin-bottom: 1em;
 }
 
-/* 隐藏标题的类(已不再使用，但保留万一想用) */
-.hidden-title {
-  display: none !important;
-}
-
 /* ========== 媒体查询 ========== */
-/* 大屏 >=1200px */
+/* 大屏 >=1200px: 标题竖排, row-lateral并排 */
 @media (min-width: 1200px) {
   .about-container {
-    flex-direction: row; /* 标题-照片-文本 并排 */
+    flex-direction: row;
   }
   #main-title {
     writing-mode: vertical-rl;
@@ -140,8 +135,8 @@ html, body {
   }
 }
 
-/* 中屏 900px ~ 1199px */
-@media (max-width: 1199px) and (min-width: 900px) {
+/* 中屏 900px~1199px: 标题独立一行, row-lateral下一行 */
+@media (max-width:1199px) and (min-width:900px) {
   .about-container {
     flex-direction: column;
     align-items: flex-start;
@@ -159,8 +154,8 @@ html, body {
   }
 }
 
-/* 小屏 <900px */
-@media (max-width: 899px) {
+/* 小屏 <900px: 标题+照片+文本上下排 */
+@media (max-width:899px) {
   .about-container {
     flex-direction: column;
     align-items: flex-start;
@@ -216,7 +211,7 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Swiper 容器 */
+/* Swiper 主容器 */
 .swiper-container {
   width: 100%;
   height: calc(100% - 100px);
@@ -225,12 +220,12 @@ html, body {
   position: relative;
 }
 
-/* Swiper Slide 正常换行 */
+/* 让 Slide 正常换行 */
 .swiper-slide {
   display: block;
 }
 
-/* 卡片样式：拓宽50% (900->1350) */
+/* 卡片样式：900->1350 */
 .dark-section {
   background: #fff;
   border-left: 5px solid #2a5d84;
@@ -304,7 +299,7 @@ html, body {
   background: #333;
 }
 
-/* ========== 图片画廊 & Modal 放大 ========== */
+/* ========== 图片画廊 & Modal ========== */
 .scores-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -325,7 +320,7 @@ html, body {
   border-color: #333;
 }
 
-/* Modal 样式 */
+/* Modal */
 .modal {
   display: none;
   position: fixed;
