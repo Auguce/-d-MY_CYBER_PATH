@@ -18,14 +18,14 @@
 
     <!-- 
       [页1] About Me：
-      - 大屏下：标题竖排在左，row-lateral 里照片 + 文本并排在右
-      - 中屏下：标题独占一行，再下一行 row-lateral 并排照片/文本
-      - 小屏下：标题 + row-lateral(照片+文本) 全部上下排布
-      - 标题可随 about-container 滚动
+      - 大屏下：标题竖排在左，.row-lateral 里照片+文本并排在右
+      - 中屏下：标题独占一行、.row-lateral 并排在下一行
+      - 小屏下：标题 + .row-lateral(照片+文本) 全部上下排布
+      - 标题随 about-container 一起滚动，不随JS隐藏
     -->
     <section id="page-about" class="page visible-page">
       <div class="about-container">
-        <!-- 主标题 -->
+        <!-- 主标题 (不再在JS中隐藏) -->
         <div id="main-title">My Cybersecurity Journey</div>
 
         <!-- row-lateral：照片 + 文本 二者并排或上下排 -->
@@ -53,9 +53,9 @@
     <!-- /#page-about -->
 
     <!-- 
-      [页2] 经历 / 项目 (Swiper Coverflow):
-      - 主标题在这里隐藏 (scripts.js中加 hidden-title)
-      - 再度放慢Swiper动画
+      [页2] 经历 / 项目 (Swiper Coverflow)：
+      - 本页覆盖在 about-container 之上(物理叠层)
+      - 先退出再进入时，会将 About Me 挤到后面，而标题也随之
       - 小屏下按钮不被遮挡
     -->
     <section id="page-experience" class="page not-visible">

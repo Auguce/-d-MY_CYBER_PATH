@@ -29,34 +29,31 @@ html, body {
   height: 100%;
   overflow: hidden;
 
-  /* 1) 改用 0.9s + ease-in-out + will-change 来让动画更柔和，开启 GPU 优化 */
+  /* 提升动画柔和度 & GPU 加速 */
   transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
   will-change: transform, opacity;
 
   z-index: 1;
   opacity: 0; /* 初始不可见 */
 }
-
 .visible-page {
   z-index: 2;
   opacity: 1;
   transform: translateY(0);
 }
 
-/* 当页面隐藏时可稍微上/下移动 + 半透明
-   2) 缩小 transform 距离到 5%，提高透明度到 0.7 */
-   #page-about.not-visible {
-    transform: translateY(-5%);
-    opacity: 0.7;
-  }
-  #page-experience.not-visible {
-    transform: translateY(5%);
-    opacity: 0.7;
-  }
+/* 当页面隐藏时，稍微移动5%，透明度调到0.7 */
+#page-about.not-visible {
+  transform: translateY(-5%);
+  opacity: 0.7;
+}
+#page-experience.not-visible {
+  transform: translateY(5%);
+  opacity: 0.7;
+}
 
 /* ========== About Me 页面 ========== */
 #page-about {
-  /* 背景从上到下逐渐透明 */
   background: linear-gradient(
     to bottom,
     rgba(255,255,255,0.98) 60%,
@@ -65,20 +62,17 @@ html, body {
   );
 }
 
-/* about-container 里包含：
-   1) #main-title
-   2) .row-lateral （照片 + 文本）
-*/
+/* about-container 中包含标题和 row-lateral */
 .about-container {
   width: 90%;
   max-width: 1200px;
   margin: 80px auto;
   display: flex;
-  /* 初始: flex-direction: column; 让标题和 row-lateral 垂直排 */
+  /* 默认列方向 */
   flex-direction: column;
   gap: 20px;
   align-items: flex-start;
-  overflow-y: auto; 
+  overflow-y: auto;
   max-height: calc(100% - 120px);
   box-sizing: border-box;
   position: relative;
@@ -96,16 +90,16 @@ html, body {
   transition: all 0.5s ease;
 }
 
-/* row-lateral: 放照片和文本的容器 */
+/* row-lateral: 照片+文本的容器 */
 .row-lateral {
-  display: flex; /* 默认并排照片和文本 */
+  display: flex;
   flex-direction: row;
   gap: 20px;
-  width: 100%; /* 占满父容器宽度 */
+  width: 100%;
   align-items: flex-start;
 }
 
-/* 头像照片 */
+/* 头像 */
 .profile-pic {
   width: 200px;
   height: auto;
@@ -128,18 +122,16 @@ html, body {
   margin-bottom: 1em;
 }
 
-/* 隐藏标题的类 */
+/* 隐藏标题的类(已不再使用，但保留万一想用) */
 .hidden-title {
   display: none !important;
 }
 
 /* ========== 媒体查询 ========== */
-
-/* (A) 大屏 >=1200px：标题竖排在左，row-lateral 与标题并排 */
+/* 大屏 >=1200px */
 @media (min-width: 1200px) {
   .about-container {
-    /* 在大屏时，将标题与 row-lateral 横向并排 */
-    flex-direction: row;
+    flex-direction: row; /* 标题-照片-文本 并排 */
   }
   #main-title {
     writing-mode: vertical-rl;
@@ -147,13 +139,11 @@ html, body {
     font-size: 2rem;
     margin-right: 20px;
   }
-  /* row-lateral 本身就是flex row */
 }
 
-/* (B) 中屏 900px ~ 1199px：标题占据一行，row-lateral在下一行并排照片+文本 */
+/* 中屏 900px ~ 1199px */
 @media (max-width: 1199px) and (min-width: 900px) {
   .about-container {
-    /* 标题和 row-lateral 垂直排 */
     flex-direction: column;
     align-items: flex-start;
   }
@@ -161,21 +151,20 @@ html, body {
     writing-mode: horizontal-tb;
     text-orientation: upright;
     font-size: 1.8rem;
-    width: 100%; /* 占整行 */
+    width: 100%;
     margin-bottom: 10px;
   }
-  /* row-lateral 保持 flex: row, 并排照片+文本 */
   .row-lateral {
     flex-direction: row;
     gap: 20px;
   }
 }
 
-/* (C) 小屏 <900px：标题在上，row-lateral 里照片与文本也上下排 */
+/* 小屏 <900px */
 @media (max-width: 899px) {
   .about-container {
     flex-direction: column;
-    align-items: flex-start; 
+    align-items: flex-start;
   }
   #main-title {
     writing-mode: horizontal-tb;
@@ -184,9 +173,8 @@ html, body {
     width: 100%;
     margin-bottom: 10px;
   }
-  /* row-lateral 也改为纵向 */
   .row-lateral {
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
   }
   .profile-pic {
@@ -206,7 +194,7 @@ html, body {
   border-radius: 10px;
   text-align: center;
   line-height: 50px;
-  font-size: 2rem; 
+  font-size: 2rem;
   color: #fff;
   cursor: pointer;
   opacity: 0.8;
@@ -232,13 +220,13 @@ html, body {
 /* Swiper 容器 */
 .swiper-container {
   width: 100%;
-  height: calc(100% - 100px); 
+  height: calc(100% - 100px);
   margin: 0 auto;
   box-sizing: border-box;
   position: relative;
 }
 
-/* 让文字正常换行 */
+/* Swiper Slide 正常换行 */
 .swiper-slide {
   display: block;
 }
@@ -252,9 +240,9 @@ html, body {
   margin: 0 auto;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 
-  max-width: 1350px; 
+  max-width: 1350px;
   width: 90%;
-  height: auto; 
+  height: auto;
   overflow-y: auto;
 }
 
@@ -287,7 +275,7 @@ html, body {
   border-radius: 10px;
   text-align: center;
   line-height: 50px;
-  font-size: 2rem; 
+  font-size: 2rem;
   color: #fff;
   cursor: pointer;
   opacity: 0.8;
@@ -347,7 +335,7 @@ html, body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; 
+  overflow: auto;
   background-color: rgba(0,0,0,0.8);
 }
 .modal-content {
