@@ -3,92 +3,113 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Cybersecurity Journey - Scroll Reveal</title>
+  <title>My Cybersecurity Journey - Dynamic Layout</title>
+
+  <!-- Swiper CSS（CDN） -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/swiper/swiper-bundle.min.css"
+  />
+  <!-- 自定义样式文件 -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- ========== [顶栏或空白] ========== -->
-  <!-- 如果想要一个顶部导航，也可放在这里 -->
-  
-  <!-- ========== [About Me] ========== -->
-  <section class="section about-me">
-    <div class="about-container">
-      <h1 id="main-title">My Cybersecurity Journey</h1>
-      <div class="row-lateral">
-        <img src="profile.jpg" alt="Profile" class="profile-pic" />
-        <div class="summary">
-          <h2>Binyu Wang</h2>
-          <p><strong>About Me</strong><br>
-            As a dedicated Master's student in Computer Science ...
-          </p>
-          <p>
-            This transition was fueled by my fascination with cybersecurity, ...
-          </p>
-          <p>
-            Long-term, I aspire to be a proficient penetration tester ...
-          </p>
-        </div>
+  <!-- 整个网站用正常文档流；不再需要 #app 做绝对定位翻页 -->
+  <div id="app">
+
+    <!-- [页1] About Me：只在顶部展示，向下滚时可见下方内容 -->
+    <section id="page-about">
+      <div class="about-container">
+        <div id="main-title">My Cybersecurity Journey</div>
+        <div class="row-lateral">
+          <img src="profile.jpg" alt="My Profile Picture" class="profile-pic" />
+          <div class="summary">
+            <h2>Binyu Wang</h2>
+            <p>
+              <strong>About Me</strong><br>
+              As a dedicated Master's student in Computer Science with ...
+            </p>
+            <p>
+              This transition was fueled by my fascination with cybersecurity ...
+            </p>
+            <p>
+              Long-term, I aspire to be a proficient penetration tester ...
+            </p>
+          </div>
+        </div> <!-- /row-lateral -->
       </div>
-    </div>
-  </section>
+    </section>
+    <!-- /#page-about -->
 
-  <!-- ========== [项目/经历段落 1] ========== -->
-  <section class="section reveal from-left">
-    <div class="dark-section single-column">
-      <h2>Neural Network Key Exchange</h2>
-      <p><strong>Honours Year CS Project, University of Liverpool</strong><br>
-         <em>(Sept 2022 - Jun 2023)</em>
-      </p>
-      <p>
-        This project delved into the innovative Kanter-Kinzel-Kanter (K-K-K) protocol, ...
-      </p>
-      <!-- etc. -->
-    </div>
-  </section>
+    <!-- 去掉向下箭头或隐藏它 -->
+    <!-- <div class="arrow-down" id="btn-to-experience">&#x25BC;</div> -->
 
-  <!-- ========== [项目/经历段落 2] ========== -->
-  <section class="section reveal from-right">
-    <div class="dark-section single-column">
-      <h2>Hands-On Cybersecurity Course</h2>
-      <p><strong>Graduate-Level, Boston University</strong><br>
-         <em>(Feb 2024 - Jun 2024)</em>
-      </p>
-      <p>
-        This graduate-level course provided a comprehensive hands-on approach...
-      </p>
-      <!-- etc. -->
-    </div>
-  </section>
+    <!-- 
+      [页2] 经历 / 项目：随正常文档流排布在 about-container 下方，
+      用户向下滚动时依次“pop up” (slide/fade) 出来
+    -->
+    <section id="page-experience">
+      <!-- Swiper 主容器：保留原先的左右翻页功能 -->
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
 
-  <!-- 依次添加更多 section，交替 from-left / from-right -->
-  <section class="section reveal from-left">
-    <div class="dark-section single-column">
-      <h2>Web3 RPG: Blockchain & NFT Integration</h2>
-      <!-- etc. -->
-    </div>
-  </section>
+          <!-- Slide 1: Neural Network Key Exchange -->
+          <div class="swiper-slide dark-section pop-up hidden">
+            <h2>Neural Network Key Exchange</h2>
+            <p>
+              <strong>Honours Year Computer Science Project, University of Liverpool, UK</strong><br>
+              <em>(Sept 2022 - Jun 2023)</em>
+            </p>
+            <p>
+              This project delved into the innovative Kanter-Kinzel-Kanter ...
+            </p>
+            <!-- ... 省略其余文本不再赘述，为示例保留 -->
+          </div>
+          <!-- /Slide 1 -->
 
-  <section class="section reveal from-right">
-    <div class="dark-section single-column">
-      <h2>Network Programming Assignments</h2>
-      <!-- etc. -->
-    </div>
-  </section>
+          <!-- Slide 2: Hands-On Cybersecurity Course -->
+          <div class="swiper-slide dark-section pop-up hidden">
+            <h2>Hands-On Cybersecurity Course</h2>
+            <!-- ... 课程内容 ... -->
+          </div>
 
-  <section class="section reveal from-left">
-    <div class="dark-section single-column">
-      <h2>Enterprise Cybersecurity Management</h2>
-      <!-- etc. -->
-    </div>
-  </section>
+          <!-- Slide 3: Web3 RPG -->
+          <div class="swiper-slide dark-section pop-up hidden">
+            <h2>Web3 RPG: Blockchain & NFT Integration</h2>
+            <!-- ... 内容 ... -->
+          </div>
 
-  <!-- [页脚 optional] -->
-  <footer>
-    <p style="text-align:center;margin:20px;">©2025 My Cybersecurity Journey</p>
-  </footer>
+          <!-- Slide 4: Network Programming Assignments -->
+          <div class="swiper-slide dark-section pop-up hidden">
+            <h2>Network Programming Assignments</h2>
+            <!-- ... 内容 ... -->
+          </div>
 
-  <!-- 脚本 -->
+          <!-- Slide 5: Enterprise Cybersecurity Management -->
+          <div class="swiper-slide dark-section pop-up hidden">
+            <h2>Enterprise Cybersecurity Management</h2>
+            <!-- ... 内容 ... -->
+          </div>
+
+        </div> <!-- /swiper-wrapper -->
+
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </section>
+    <!-- /#page-experience -->
+
+    <!-- 若不需要回到About功能，可去掉上箭头 
+         <div class="arrow-up" id="btn-to-about">&#x25B2;</div> 
+    -->
+
+  </div> <!-- /#app -->
+
+  <!-- Swiper JS (CDN) -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <!-- 自定义脚本 -->
   <script src="scripts.js"></script>
 </body>
 </html>

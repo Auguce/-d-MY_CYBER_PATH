@@ -1,91 +1,225 @@
-/* 基础重置 */
+/* ================== 全局重置 ================== */
 * {
-  margin: 0; padding: 0; box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
 html, body {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
+  /* 不再overflow:hidden，让用户能正常滚轮上下滚 */
+  overflow-x: hidden; /* 仅隐藏水平滚动 */
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   line-height: 1.6;
-  overflow-x: hidden; /* 禁止水平滚动 */
 }
 
-/* section 通用 */
-.section {
+/* #app 普通块容器，不做翻页 */
+#app {
   width: 100%;
-  padding: 60px 20px; /* 上下内边距 */
-  /* 你可以加背景色或背景图 */
+  /* height: auto; 也可不写 */
+  position: relative;
 }
-.about-me {
+
+/* ========== About Me ========== */
+#page-about {
+  /* 保留你的背景渐变 */
   background: linear-gradient(
     to bottom,
     rgba(255,255,255,0.98) 60%,
     rgba(255,255,255,0.6) 80%,
     rgba(255,255,255,0) 100%
   );
+  /* 让它撑开自身高度, padding留些空间 */
+  padding: 40px 0;
 }
-/* 你的 about-container 样式，可复用 */
+
 .about-container {
-  width: 90%; max-width: 1200px;
-  margin: 0 auto;
-  display: flex; flex-direction: column;
-  gap: 20px; align-items: flex-start;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto; /* 居中 */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  /* 不再限制 max-height, 让内容自然撑开 */
+  overflow-y: visible;
+  box-sizing: border-box;
   position: relative;
 }
 
-/* 标题 样式 */
 #main-title {
-  font-weight: bold; 
-  font-size: 2rem;
+  font-weight: bold;
+  font-size: 1.8rem;
   color: rgba(60,60,60,0.6);
-  background: linear-gradient(90deg,#999 0%,#666 100%);
+  background: linear-gradient(90deg, #999 0%, #666 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom:20px;
+  line-height: 1.4;
+  transition: all 0.5s ease;
 }
 
-/* row-lateral: 头像+文本 */
 .row-lateral {
-  display: flex; flex-direction: row;
-  gap: 20px; align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+  align-items: flex-start;
 }
-.profile-pic {
-  width: 180px; border-radius: 10px;
-}
-.summary { text-align: justify; }
 
-/* .dark-section 之类的保留 */
+.profile-pic {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.summary {
+  flex: 1;
+  text-align: justify;
+  font-size: 1rem;
+  margin-right: 10px;
+}
+.summary h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.8em;
+}
+.summary p {
+  margin-bottom: 1em;
+}
+
+/* 媒体查询保留，保证标题与照片文本排布 */
+@media (min-width:1200px) {
+  .about-container {
+    flex-direction: row;
+  }
+  #main-title {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 2rem;
+    margin-right: 20px;
+  }
+}
+@media (max-width:1199px) and (min-width:900px) {
+  .about-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #main-title {
+    writing-mode: horizontal-tb;
+    font-size: 1.8rem;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .row-lateral {
+    flex-direction: row;
+  }
+}
+@media (max-width:899px) {
+  .about-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #main-title {
+    writing-mode: horizontal-tb;
+    font-size: 1.6rem;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .row-lateral {
+    flex-direction: column;
+    align-items: center;
+  }
+  .profile-pic {
+    margin-bottom: 20px;
+  }
+}
+
+/* ========== Experience 区域 ========== */
+#page-experience {
+  padding: 40px 0;
+  box-sizing: border-box;
+  background: linear-gradient(
+    to top,
+    rgba(233,239,245,0.98) 60%,
+    rgba(233,239,245,0.6) 85%,
+    rgba(233,239,245,0) 100%
+  );
+}
+
+/* Swiper容器保持 */
+.swiper-container {
+  width: 100%;
+  max-width: 1200px;
+  height: 600px; /* 或 auto; 看你需求 */
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Slide */
+.swiper-slide {
+  display: block;
+}
+
+/* 卡片 */
 .dark-section {
   background: #fff;
   border-left: 5px solid #2a5d84;
-  padding: 20px; border-radius: 10px;
-  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-/* optional: single-column layout */
-.single-column {
-  max-width: 800px; 
-  margin: 0 auto;
+
+  max-width: 90%;
+  margin: 0 auto; /* 居中卡片 */
+  height: auto;
+  overflow-y: auto;
 }
 
-/* ========== [reveal动画 初始状态] ========== */
-.reveal {
-  opacity: 0; /* 初始隐藏 */
-  transform: translateX(0); 
-  transition: transform 0.8s ease, opacity 0.8s ease;
+.dark-section h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.6em;
 }
-.from-left {
-  transform: translateX(-80px); /* 初始往左偏移 */
+.dark-section h3 {
+  font-size: 1.3rem;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  color: #333;
 }
-.from-right {
-  transform: translateX(80px);  /* 初始往右偏移 */
+.dark-section p, .dark-section li {
+  font-size: 1rem;
+  margin-bottom: 0.8em;
+  line-height: 1.6;
+  text-align: justify;
 }
-/* 当 .reveal.scrolled 类加上后，进入视口 => 回到正常位置, 不透明 */
-.reveal.scrolled {
+
+/* Swiper默认控件 */
+.swiper-slide-active {
+  opacity: 1;
+}
+.swiper-slide-prev, .swiper-slide-next {
+  opacity: 0.6;
+  transform: scale(0.9);
+}
+.swiper-button-prev, .swiper-button-next {
+  color: #333;
+  z-index: 99;
+}
+.swiper-pagination-bullet-active {
+  background: #333;
+}
+
+/* ========== Pop Up 动画 ========== */
+/* 初始隐藏状态 */
+.pop-up.hidden {
+  opacity: 0;
+  transform: translateX(-80px); /* 默认从左侧滑入，你可改成 from right if you want */
+}
+
+/* 显示时：渐显+滑入 */
+.pop-up.show {
   opacity: 1;
   transform: translateX(0);
+  transition: all 0.7s ease;
 }
-
-/* footer */
-footer { padding:20px; }
-footer p { text-align:center; color:#999; }
