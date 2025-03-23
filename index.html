@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Cybersecurity Journey - Single Scroll</title>
 
-  <!-- 自定义样式文件（与 scripts.js 同目录） -->
+  <!-- 自定义样式文件 -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- 整个页面只有一个scroll容器: body/html本身即可滚动 -->
   <div id="app">
 
-    <!-- 第一张卡片：About Me，初次进入可见 -->
+    <!-- 第一张卡片：About Me，初次打开只看到它 -->
     <section class="card about-container" id="card-about">
       <div id="main-title">My Cybersecurity Journey</div>
       <div class="row-lateral">
@@ -33,50 +32,45 @@
       </div>
     </section>
 
-    <!-- 其余 7 张卡片：经历或项目，初始隐藏(translateX / opacity=0)，
-         依赖 Intersection Observer 触发时 slide-in-left / slide-in-right -->
+    <!-- 其余经历卡片: 初始都 slide-hide, data-slide="left" or "right" 决定动画方向 -->
+    <!-- 并增加 margin-top，所以需要往下滚一段，才看到第二张卡片 -->
     <!-- Slide 1: Neural Network Key Exchange -->
-    <section class="card dark-section slide-hide" data-slide="left">
+    <section class="card modern-card slide-hide" data-slide="left">
       <h2>Neural Network Key Exchange</h2>
       <p><strong>Honours Year Computer Science Project...</strong><br>
          <em>(Sept 2022 - Jun 2023)</em>
       </p>
       <p>
-        This project delved into the innovative Kanter-Kinzel-Kanter (K-K-K) protocol...
+        This project delved into the innovative Kanter-Kinzel-Kanter protocol...
       </p>
-      <!-- ...其余内容略 -->
+      <!-- ...省略细节 -->
     </section>
 
     <!-- Slide 2: Hands-On Cybersecurity Course -->
-    <section class="card dark-section slide-hide" data-slide="right">
+    <section class="card modern-card slide-hide" data-slide="right">
       <h2>Hands-On Cybersecurity Course</h2>
-      <p><strong>Graduate-Level Cybersecurity Course...</strong><br>
-         <em>(Feb 2024 - Jun 2024)</em>
-      </p>
-      <!-- ...其余内容略 -->
+      <!-- ...省略 -->
     </section>
 
     <!-- Slide 3: Web3 RPG -->
-    <section class="card dark-section slide-hide" data-slide="left">
+    <section class="card modern-card slide-hide" data-slide="left">
       <h2>Web3 RPG: Blockchain & NFT Integration</h2>
-      <!-- ...其余内容略 -->
+      <!-- ...省略 -->
     </section>
 
     <!-- Slide 4: Network Programming Assignments -->
-    <section class="card dark-section slide-hide" data-slide="right">
+    <section class="card modern-card slide-hide" data-slide="right">
       <h2>Network Programming Assignments</h2>
-      <!-- ...其余内容略 -->
+      <!-- ...省略 -->
     </section>
 
     <!-- Slide 5: Enterprise Cybersecurity Management -->
-    <section class="card dark-section slide-hide" data-slide="left">
+    <section class="card modern-card slide-hide" data-slide="left">
       <h2>Enterprise Cybersecurity Management</h2>
-      <!-- ...其余内容略 -->
+      <!-- ...省略 -->
     </section>
 
-    <!-- ...你可继续添加更多卡片 ...
-         例如第6,7,8张卡片, 依次 data-slide=right/left 交错
-         保持 slide-hide 类, data-slide="left" or "right" -->
+    <!-- 你可继续添加更多卡片 (slide-hide + data-slide=left/right) -->
 
   </div> <!-- /#app -->
 
