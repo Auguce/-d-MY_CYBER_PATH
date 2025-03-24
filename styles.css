@@ -244,10 +244,9 @@ html, body {
 /* 其余徽章淡出到四周 (示例: 放大 & translate)
    你可以写更复杂, 让他们移到左上, 左下, 右上, 右下...
 */
-.badge-item.others-fadeout {
-  opacity: 0.2; 
-  transform: scale(0.8) translateY(50px);
-  transition: transform 0.5s ease, opacity 0.5s ease;
+.others-fadeout {
+  opacity: 0;
+  transition: transform 0.7s ease, opacity 0.7s ease;
 }
 
 /* (可选)backface-visibility: hidden; 

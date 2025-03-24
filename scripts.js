@@ -40,24 +40,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   badgeItems.forEach(badge => {
     badge.addEventListener("click", () => {
-      // 如果已经flipped，点击可恢复
       const isFlipped = badge.classList.contains("flipped");
-      
-      if(!isFlipped){
-        // 1) 当前徽章加 flipped
+  
+      if(!isFlipped) {
+        // 1) 当前徽章 => flipped
         badge.classList.add("flipped");
-        // 2) 其余徽章 => others-fadeout
+  
+        // 2) 其余徽章 => others-fadeout + 动态 transform
         badgeItems.forEach(other => {
           if(other !== badge) {
             other.classList.add("others-fadeout");
+  
+            // 生成随机角度 & 距离
+            const angle = Math.random() * 360;         // 0~360
+            const dist = 150 + Math.random() * 100;    // 150~250 px
+            // 换算成 x,y
+            const rad = angle * (Math.PI / 180);
+            const tx = dist * Math.cos(rad);
+            const ty = dist * Math.sin(rad);
+  
+            // inline style: translate(tx,ty) scale(0.8)
+            other.style.transform = `translate(${tx}px, ${ty}px) scale(0.8)`;
           }
         });
+  
       } else {
-        // 如果已flipped, 再点一次可反转回去
+        // 若再次点击同一个徽章 => 恢复
         badge.classList.remove("flipped");
-        // 取消其他徽章 fadeout
         badgeItems.forEach(other => {
           other.classList.remove("others-fadeout");
+          other.style.transform = "";  // 清空 inline transform
         });
       }
     });
