@@ -1,16 +1,16 @@
-/* ========== 全局重置 & 布局 ========== */
+/* ========== 全局 & 布局 ========== */
 * {
-  margin: 0;
-  padding: 0;
+  margin: 0; 
+  padding: 0; 
   box-sizing: border-box;
 }
 html, body {
-  width: 100%;
-  min-height: 100%;
+  width: 100%; 
+  min-height: 100%; 
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: hidden; 
 }
 
 #app {
@@ -23,16 +23,17 @@ html, body {
   max-width: 1200px;
   margin: 0 auto; /* 水平居中 */
   position: relative;
+  /* 默认一些上外边距, 可随意微调 */
   margin-top: 2rem;
 }
 
-/* modern-card: 现代卡片风格，经历卡片 */
+/* modern-card: 令经历卡片更现代, 并缩短margin-top (80vh 而非150vh) */
 .modern-card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
   padding: 2rem;
-  margin-top: 80vh; /* 80vh保证初始时不显示 */
+  margin-top: 80vh; /* 改小一些, 这样不会太远, 但也不会一上来就出现下一卡 */
   text-align: center;
   transition: box-shadow 0.2s ease;
 }
@@ -42,12 +43,13 @@ html, body {
 
 /* ========== About Me (第一张卡片) ========== */
 .about-container {
-  margin: 10vh auto;
+  margin: 10vh auto; 
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: flex-start;
   position: relative;
+
   background: linear-gradient(
     to bottom,
     rgba(255,255,255,0.98) 60%,
@@ -95,19 +97,25 @@ html, body {
   margin-bottom: 1em;
 }
 
-/* ========== 初始隐藏与动画 ========== */
-.intro-hide,
-.slide-hide {
+/* ========== 初始隐藏 + 动画 ========== */
+/* about-container 初始隐藏(透明), 由 scripts.js 添加 .slide-in-top 动画 */
+.intro-hide {
   opacity: 0;
   position: relative;
 }
 
-/* About Me: 向下滑入 */
+/* 其余卡片：slide-hide -> slide-in-left/right */
+.slide-hide {
+  opacity: 0; 
+  position: relative;
+}
+
+/* about me: 向下滑入 */
 .slide-in-top {
   animation: slideTopIn 1.5s ease-out forwards;
 }
 
-/* 左右滑入 (经历卡片) */
+/* 左右滑入：加长至1.5s */
 .slide-in-left {
   animation: slideLeftIn 1.5s ease forwards;
 }
@@ -115,22 +123,24 @@ html, body {
   animation: slideRightIn 1.5s ease forwards;
 }
 
-/* 关键帧：向下滑入 */
+/* 关键帧: 向下滑入 + 渐显 */
 @keyframes slideTopIn {
-  0% { transform: translateY(-50px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+  0% { transform: translateY(-50px); opacity:0; }
+  100% { transform: translateY(0);   opacity:1; }
 }
-/* 关键帧：左右滑入 */
+
+/* 关键帧: 左右滑入 + 渐显 */
 @keyframes slideLeftIn {
-  0% { transform: translateX(-50px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
+  0%   { transform: translateX(-50px); opacity: 0; }
+  100% { transform: translateX(0);     opacity: 1; }
 }
 @keyframes slideRightIn {
-  0% { transform: translateX(50px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
+  0%   { transform: translateX(50px);  opacity: 0; }
+  100% { transform: translateX(0);     opacity: 1; }
 }
 
 /* ========== 媒体查询 ========== */
+/* 大屏 >=1200px */
 @media (min-width:1200px) {
   .about-container {
     flex-direction: row;
@@ -143,6 +153,8 @@ html, body {
     margin-bottom: 0;
   }
 }
+
+/* 中屏 900px~1199px */
 @media (max-width:1199px) and (min-width:900px) {
   .about-container {
     flex-direction: column;
@@ -159,6 +171,8 @@ html, body {
     flex-direction: row;
   }
 }
+
+/* 小屏 <900px */
 @media (max-width:899px) {
   .about-container {
     flex-direction: column;
@@ -178,60 +192,4 @@ html, body {
   .profile-pic {
     margin-bottom: 20px;
   }
-}
-
-/* ========== 徽章相关 ========== */
-.badge-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-.badge-item {
-  width: 150px;
-  height: 150px;
-  position: relative;
-  cursor: pointer;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  transition: transform 1s ease;
-  /* 默认不设置 transform，保持原位 */
-}
-.badge-item .front-face,
-.badge-item .back-face {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-.badge-item .front-face {
-  transform: rotateY(0deg);
-}
-.badge-item .back-face {
-  transform: rotateY(180deg);
-}
-
-/* 修改后的 flipped：定位相对于父容器，居中在 badge-container 内 */
-.badge-item.flipped {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotateY(180deg) scale(2);
-  z-index: 999;
-  transition: transform 1s ease;
-}
-
-/* 其它徽章随机飞散淡出，具体的 transform 由 JS 动态设置 */
-.others-fadeout {
-  opacity: 0;
-  transition: transform 0.7s ease, opacity 0.7s ease;
-}
-
-/* ========== 可选: 防止翻转中看到背面突兀 ========== */
-.badge-item,
-.badge-item .front-face,
-.badge-item .back-face {
-  backface-visibility: hidden;
 }
