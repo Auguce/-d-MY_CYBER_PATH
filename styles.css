@@ -193,3 +193,49 @@ html, body {
     margin-bottom: 20px;
   }
 }
+
+.badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.badge-item {
+  width: 150px; height: 150px;
+  position: relative;
+  perspective: 1000px; /* For 3D flip */
+  cursor: pointer;
+  transition: transform 0.7s ease;
+}
+/* 初始状态: front visible, back hidden */
+.badge-item .front-face {
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  position: absolute; top:0; left:0;
+}
+.badge-item .back-face {
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  position: absolute; top:0; left:0;
+}
+/* 当激活翻转时 */
+.badge-item.flipped {
+  transform: scale(2) translate(-50%, -50%) rotateY(180deg);
+  position: fixed;
+  top: 50%; left: 50%;
+  z-index: 999;
+  transition: transform 1s ease;
+}
+/* front face 180度, back face 0度 */
+.badge-item.flipped .front-face {
+  transform: rotateY(0deg);
+}
+.badge-item.flipped .back-face {
+  transform: rotateY(180deg);
+  display: block; /* show Credly iframe */
+}
+/* 其余非激活的徽章淡出 */
+.badge-item.inactive {
+  opacity: 0.2;
+}

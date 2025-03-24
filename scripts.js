@@ -36,4 +36,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const observer = new IntersectionObserver(onIntersect, options);
   cards.forEach(card => observer.observe(card));
 
+  const badgeItems = document.querySelectorAll(".badge-item");
+
+  badgeItems.forEach(badge => {
+    badge.addEventListener("click", () => {
+      // 1) 标记点击的这个徽章为 flipped
+      badge.classList.toggle("flipped");
+      // 2) 其余徽章 inactive
+      badgeItems.forEach(other => {
+        if(other !== badge) {
+          other.classList.toggle("inactive");
+        }
+      });
+      // 3) 当 flipping 180度时, halfway(transition event) => hide front img, show back iframe
+      // or use separate keyframes approach
+    });
+  });
+
 });
+
