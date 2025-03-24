@@ -40,16 +40,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   badgeItems.forEach(badge => {
     badge.addEventListener("click", () => {
-      // 1) 标记点击的这个徽章为 flipped
-      badge.classList.toggle("flipped");
-      // 2) 其余徽章 inactive
-      badgeItems.forEach(other => {
-        if(other !== badge) {
-          other.classList.toggle("inactive");
-        }
-      });
-      // 3) 当 flipping 180度时, halfway(transition event) => hide front img, show back iframe
-      // or use separate keyframes approach
+      // 如果已经flipped，点击可恢复
+      const isFlipped = badge.classList.contains("flipped");
+      
+      if(!isFlipped){
+        // 1) 当前徽章加 flipped
+        badge.classList.add("flipped");
+        // 2) 其余徽章 => others-fadeout
+        badgeItems.forEach(other => {
+          if(other !== badge) {
+            other.classList.add("others-fadeout");
+          }
+        });
+      } else {
+        // 如果已flipped, 再点一次可反转回去
+        badge.classList.remove("flipped");
+        // 取消其他徽章 fadeout
+        badgeItems.forEach(other => {
+          other.classList.remove("others-fadeout");
+        });
+      }
     });
   });
 

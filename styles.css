@@ -204,38 +204,51 @@ html, body {
 .badge-item {
   width: 150px; height: 150px;
   position: relative;
-  perspective: 1000px; /* For 3D flip */
   cursor: pointer;
-  transition: transform 0.7s ease;
+  /* 父容器 3D翻转场景 */
+  transform-style: preserve-3d;
+  perspective: 1000px; 
+  transition: transform 1s ease; 
+  /* 在原位时没有 transform, 仅翻转后 apply rotateY(180deg)... */
 }
-/* 初始状态: front visible, back hidden */
+/* 给 badge-item 初始 transform: rotateY(0) 也行, 
+   但可省略, 默认=0 */
+
+/* front-face */
 .badge-item .front-face {
+  position: absolute; top:0; left:0;
   width: 100%; height: 100%;
   backface-visibility: hidden;
-  position: absolute; top:0; left:0;
-}
-.badge-item .back-face {
-  width: 100%; height: 100%;
-  backface-visibility: hidden;
-  position: absolute; top:0; left:0;
-}
-/* 当激活翻转时 */
-.badge-item.flipped {
-  transform: scale(2) translate(-50%, -50%) rotateY(180deg);
-  position: fixed;
-  top: 50%; left: 50%;
-  z-index: 999;
-  transition: transform 1s ease;
-}
-/* front face 180度, back face 0度 */
-.badge-item.flipped .front-face {
   transform: rotateY(0deg);
+  /* front-face 正面朝外 */
 }
-.badge-item.flipped .back-face {
+
+/* back-face */
+.badge-item .back-face {
+  position: absolute; top:0; left:0;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
   transform: rotateY(180deg);
-  display: block; /* show Credly iframe */
+  /* 在未翻转时朝内(背面) */
 }
-/* 其余非激活的徽章淡出 */
-.badge-item.inactive {
-  opacity: 0.2;
+
+/* flipped: 父容器 rotateY(180deg)+放大+居中 */
+.badge-item.flipped {
+  position: fixed; /* 脱离文档流 */
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotateY(180deg) scale(2);
+  z-index: 999;
+  transition: transform 1s ease; 
 }
+
+/* 其余徽章淡出到四周 (示例: 放大 & translate)
+   你可以写更复杂, 让他们移到左上, 左下, 右上, 右下...
+*/
+.badge-item.others-fadeout {
+  opacity: 0.2; 
+  transform: scale(0.8) translateY(50px);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* (可选)backface-visibility: hidden; 
+   让背面不会被看到翻转中突兀 */
