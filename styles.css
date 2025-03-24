@@ -1,4 +1,4 @@
-/* ========== 全局重置 ========== */
+/* ========== 全局 & 布局 ========== */
 * {
   margin: 0; 
   padding: 0; 
@@ -10,8 +10,7 @@ html, body {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   line-height: 1.6;
-  /* 允许页面自然滚动 (单页长文) */
-  overflow-x: hidden; /* 禁用水平滚动 */
+  overflow-x: hidden; 
 }
 
 #app {
@@ -24,15 +23,17 @@ html, body {
   max-width: 1200px;
   margin: 0 auto; /* 水平居中 */
   position: relative;
+  /* 默认一些上外边距, 可随意微调 */
+  margin-top: 2rem;
 }
 
-/* modern-card: 给经历卡片一个简洁现代的外观 + 大Margin以防初始就看见 */
+/* modern-card: 令经历卡片更现代, 并缩短margin-top (80vh 而非150vh) */
 .modern-card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
   padding: 2rem;
-  margin-top: 150vh; /* 关键：保证初始时，这些卡片都远在视口下方 */
+  margin-top: 80vh; /* 改小一些, 这样不会太远, 但也不会一上来就出现下一卡 */
   text-align: center;
   transition: box-shadow 0.2s ease;
 }
@@ -42,11 +43,11 @@ html, body {
 
 /* ========== About Me (第一张卡片) ========== */
 .about-container {
-  margin: 10vh auto; /* 顶部留出可观空间, 10vh可自行调 */
+  margin: 10vh auto; 
   display: flex;
   flex-direction: column;
   gap: 20px;
-  align-items: flex-start; 
+  align-items: flex-start;
   position: relative;
 
   background: linear-gradient(
@@ -55,8 +56,6 @@ html, body {
     rgba(255,255,255,0.6) 80%,
     rgba(255,255,255,0) 100%
   );
-
-  /* 给 About Me 卡片一点外边距 + 内边距 */
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -98,19 +97,39 @@ html, body {
   margin-bottom: 1em;
 }
 
-/* ========== 运动动画 & 初始隐藏 ========== */
+/* ========== 初始隐藏 + 动画 ========== */
+/* about-container 初始隐藏(透明), 由 scripts.js 添加 .slide-in-top 动画 */
+.intro-hide {
+  opacity: 0;
+  position: relative;
+}
+
+/* 其余卡片：slide-hide -> slide-in-left/right */
 .slide-hide {
   opacity: 0; 
   position: relative;
 }
 
-.slide-in-left {
-  animation: slideLeftIn 0.8s ease forwards;
-}
-.slide-in-right {
-  animation: slideRightIn 0.8s ease forwards;
+/* about me: 向下滑入 */
+.slide-in-top {
+  animation: slideTopIn 1.5s ease-out forwards;
 }
 
+/* 左右滑入：加长至1.5s */
+.slide-in-left {
+  animation: slideLeftIn 1.5s ease forwards;
+}
+.slide-in-right {
+  animation: slideRightIn 1.5s ease forwards;
+}
+
+/* 关键帧: 向下滑入 + 渐显 */
+@keyframes slideTopIn {
+  0% { transform: translateY(-50px); opacity:0; }
+  100% { transform: translateY(0);   opacity:1; }
+}
+
+/* 关键帧: 左右滑入 + 渐显 */
 @keyframes slideLeftIn {
   0%   { transform: translateX(-50px); opacity: 0; }
   100% { transform: translateX(0);     opacity: 1; }
@@ -120,7 +139,7 @@ html, body {
   100% { transform: translateX(0);     opacity: 1; }
 }
 
-/* ========== 媒体查询: 保留你的需求 ========== */
+/* ========== 媒体查询 ========== */
 /* 大屏 >=1200px */
 @media (min-width:1200px) {
   .about-container {
@@ -132,9 +151,6 @@ html, body {
     font-size: 2rem;
     margin-right: 20px;
     margin-bottom: 0;
-  }
-  .row-lateral {
-    gap: 20px;
   }
 }
 

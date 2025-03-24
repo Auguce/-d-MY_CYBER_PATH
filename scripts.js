@@ -1,21 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 选取所有初始隐藏的卡片
+
+  // 1) About Me卡片: .intro-hide => .slide-in-top
+  const aboutMe = document.getElementById("card-about");
+  aboutMe.classList.add("slide-in-top");
+  // 移除初始隐藏
+  aboutMe.classList.remove("intro-hide");
+
+  // 2) 其余卡片 通过 Intersection Observer 进入视口后 slide-in-left / slide-in-right
   const cards = document.querySelectorAll(".slide-hide");
 
-  // Intersection Observer 回调
   const onIntersect = (entries, observer) => {
     entries.forEach(entry => {
       if(entry.isIntersecting) {
         const card = entry.target;
         const direction = card.dataset.slide || "left";
-        if (direction === "right") {
+
+        if(direction === "right") {
           card.classList.add("slide-in-right");
         } else {
           card.classList.add("slide-in-left");
         }
-        // 移除初始隐藏
+
         card.classList.remove("slide-hide");
-        // 不再重复监听
         observer.unobserve(card);
       }
     });
@@ -28,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const observer = new IntersectionObserver(onIntersect, options);
-
-  // 对每张 "slide-hide" 卡片监听
   cards.forEach(card => observer.observe(card));
+
 });

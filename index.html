@@ -11,8 +11,11 @@
 <body>
   <div id="app">
 
-    <!-- 第一张卡片：About Me，初次打开只看到它 -->
-    <section class="card about-container" id="card-about">
+    <!-- 
+      第一张卡片：About Me 
+      1) 初始隐藏(.intro-hide)，在 scripts.js 中添加.slide-in-top 动画
+    -->
+    <section class="card about-container intro-hide" id="card-about">
       <div id="main-title">My Cybersecurity Journey</div>
       <div class="row-lateral">
         <img src="profile.jpg" alt="My Profile Picture" class="profile-pic" />
@@ -20,7 +23,7 @@
           <h2>Binyu Wang</h2>
           <p>
             <strong>About Me</strong><br>
-            As a dedicated Master's student in Computer Science with a specialization in Cybersecurity at Boston University...
+            As a dedicated Master's student in Computer Science with a specialization...
           </p>
           <p>
             This transition was fueled by my fascination with cybersecurity...
@@ -32,49 +35,36 @@
       </div>
     </section>
 
-    <!-- 其余经历卡片: 初始都 slide-hide, data-slide="left" or "right" 决定动画方向 -->
-    <!-- 并增加 margin-top，所以需要往下滚一段，才看到第二张卡片 -->
-    <!-- Slide 1: Neural Network Key Exchange -->
+    <!-- 其余卡片：初始 slide-hide, data-slide=left/right，margin-top 80vh 防止一进页面就看见 -->
     <section class="card modern-card slide-hide" data-slide="left">
       <h2>Neural Network Key Exchange</h2>
-      <p><strong>Honours Year Computer Science Project...</strong><br>
-         <em>(Sept 2022 - Jun 2023)</em>
-      </p>
-      <p>
-        This project delved into the innovative Kanter-Kinzel-Kanter protocol...
-      </p>
-      <!-- ...省略细节 -->
+      <!-- ...省略 -->
     </section>
 
-    <!-- Slide 2: Hands-On Cybersecurity Course -->
     <section class="card modern-card slide-hide" data-slide="right">
       <h2>Hands-On Cybersecurity Course</h2>
       <!-- ...省略 -->
     </section>
 
-    <!-- Slide 3: Web3 RPG -->
     <section class="card modern-card slide-hide" data-slide="left">
       <h2>Web3 RPG: Blockchain & NFT Integration</h2>
       <!-- ...省略 -->
     </section>
 
-    <!-- Slide 4: Network Programming Assignments -->
     <section class="card modern-card slide-hide" data-slide="right">
       <h2>Network Programming Assignments</h2>
       <!-- ...省略 -->
     </section>
 
-    <!-- Slide 5: Enterprise Cybersecurity Management -->
     <section class="card modern-card slide-hide" data-slide="left">
       <h2>Enterprise Cybersecurity Management</h2>
       <!-- ...省略 -->
     </section>
 
-    <!-- 你可继续添加更多卡片 (slide-hide + data-slide=left/right) -->
+    <!-- ...可继续添加更多卡片... -->
 
   </div> <!-- /#app -->
 
-  <!-- 自定义脚本 -->
   <script src="scripts.js"></script>
 </body>
 </html>
