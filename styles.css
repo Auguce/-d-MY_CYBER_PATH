@@ -193,3 +193,23 @@ html, body {
     margin-bottom: 20px;
   }
 }
+
+.scores-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.scores-gallery img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.scores-gallery img:hover {
+  transform: scale(1.05);
+  border-color: #333;
+}

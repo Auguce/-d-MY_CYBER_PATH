@@ -36,4 +36,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const observer = new IntersectionObserver(onIntersect, options);
   cards.forEach(card => observer.observe(card));
 
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+  modal.innerHTML = `
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+    <div id="caption"></div>
+  `;
+  document.body.appendChild(modal);
+
+  const modalImg = document.getElementById("modal-img");
+  const captionText = document.getElementById("caption");
+  const closeModal = modal.querySelector(".close");
+
+  function initGalleryPreview() {
+    const galleryImages = document.querySelectorAll(".scores-gallery img");
+    galleryImages.forEach((img) => {
+      img.addEventListener("click", () => {
+        modal.style.display = "block";
+        modalImg.src = img.src;
+        captionText.textContent = img.alt;
+      });
+    });
+  }
+  initGalleryPreview();
 });
