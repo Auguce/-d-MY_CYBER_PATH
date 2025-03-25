@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // 1) About Me卡片: .intro-hide => .slide-in-top
+  // 1) About Me 卡片: 从 intro-hide 转为 slide-in-top
   const aboutMe = document.getElementById("card-about");
   aboutMe.classList.add("slide-in-top");
-  // 移除初始隐藏
   aboutMe.classList.remove("intro-hide");
 
-  // 2) 其余卡片 通过 Intersection Observer 进入视口后 slide-in-left / slide-in-right
+  // 2) 其余卡片：使用 Intersection Observer 触发 slide-in-left/right
   const cards = document.querySelectorAll(".slide-hide");
 
   const onIntersect = (entries, observer) => {
@@ -14,13 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if(entry.isIntersecting) {
         const card = entry.target;
         const direction = card.dataset.slide || "left";
-
         if(direction === "right") {
           card.classList.add("slide-in-right");
         } else {
           card.classList.add("slide-in-left");
         }
-
         card.classList.remove("slide-hide");
         observer.unobserve(card);
       }
@@ -36,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const observer = new IntersectionObserver(onIntersect, options);
   cards.forEach(card => observer.observe(card));
 
+  // 3) 创建 Modal
   const modal = document.createElement("div");
   modal.classList.add("modal");
   modal.innerHTML = `
@@ -49,11 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const captionText = document.getElementById("caption");
   const closeModal = modal.querySelector(".close");
 
+  // 4) 初始化缩略图点击事件，点击后显示 Modal（添加 active 类）
   function initGalleryPreview() {
     const galleryImages = document.querySelectorAll(".scores-gallery img");
     galleryImages.forEach((img) => {
       img.addEventListener("click", () => {
-        modal.style.display = "block";
+        modal.classList.add("active");
         modalImg.src = img.src;
         captionText.textContent = img.alt;
       });
@@ -61,12 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   initGalleryPreview();
 
-  img.addEventListener("click", () => {
-    modal.classList.add("active");
-    modalImg.src = img.src;
-    captionText.textContent = img.alt;
-  });
-
+  // 5) 关闭 Modal
   closeModal.addEventListener("click", () => {
     modal.classList.remove("active");
   });
