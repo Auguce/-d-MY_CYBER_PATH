@@ -215,7 +215,7 @@ html, body {
 }
 
 .modal {
-  display: none;
+  display: none; /* 默认隐藏 */
   position: fixed;
   z-index: 9999;
   left: 0;
@@ -223,8 +223,11 @@ html, body {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.8);
-  /* 使用 Flexbox 让内容居中 */
-  display: flex;
+  /* 默认不使用Flex布局 */
+}
+
+.modal.active {
+  display: flex; /* 当添加active类时显示为flex */
   justify-content: center;
   align-items: center;
 }
