@@ -15,6 +15,7 @@ html, body {
 
 #app {
   width: 100%;
+  padding-bottom: 20vh;
 }
 
 /* ========== 通用卡片样式 ========== */
