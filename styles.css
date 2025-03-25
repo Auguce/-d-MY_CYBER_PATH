@@ -240,3 +240,7 @@ html, body {
   border: 3px solid #fff;
   box-shadow: 0 0 20px rgba(255,255,255,0.5);
 }
+
+.card:last-child {
+  margin-bottom: 20vh;
+}
